@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MAIL STORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .sidebar { background-color: #111827; color: #d1d5db; }
+        .sidebar a { border-left: 3px solid transparent; transition: all 0.2s; }
+        .sidebar a:hover { background-color: #374151; }
+        .sidebar a.active { background-color: #1d4ed8; color: white; border-left-color: #60a5fa; }
+        .stat-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.5s; }
+        .btn { padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 600; transition: all 0.2s; cursor: pointer; border: none; }
+        .btn:active { transform: scale(0.95); }
+        .btn:disabled { background-color: #9ca3af; cursor: not-allowed; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-success { background-color: #10b981; color: white; }
+        .btn-danger { background-color: #ef4444; color: white; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; word-break: break-word; }
+        th { background-color: #f9fafb; font-weight: 600; color: #374151; text-transform: uppercase; font-size: 0.75rem; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
+        .modal-content { background-color: white; padding: 1.5rem; border-radius: 0.5rem; max-width: 90%; width: 600px; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="admin-login-view" class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold text-center text-gray-900">MAIL STORE Admin Login</h1>
+            <input id="admin-email" type="email" placeholder="Admin Email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <input id="admin-password" type="password" placeholder="Password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <button id="admin-login-btn" class="w-full btn btn-primary">Login</button>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" class="hidden">
+        <div class="flex h-screen">
+            <aside class="sidebar w-64 flex-shrink-0 overflow-y-auto">
+                <div class="p-4 text-2xl font-bold text-white">MAIL STORE</div>
+                <nav class="mt-8">
+                    <a href="#" class="nav-link block py-3 px-4" data-page="dashboard-page"><i data-lucide="layout-dashboard" class="inline-block w-5 h-5 mr-2"></i>Dashboard</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="users-page"><i data-lucide="users" class="inline-block w-5 h-5 mr-2"></i>Users</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="notifications-page"><i data-lucide="send" class="inline-block w-5 h-5 mr-2"></i>Notifications</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="deposits-page"><i data-lucide="arrow-down-circle" class="inline-block w-5 h-5 mr-2"></i>Deposits</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="replace-requests-page"><i data-lucide="shield-alert" class="inline-block w-5 h-5 mr-2"></i>Replace Requests</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="purchases-page"><i data-lucide="shopping-cart" class="inline-block w-5 h-5 mr-2"></i>Mail Purchases</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="stock-page"><i data-lucide="package-plus" class="inline-block w-5 h-5 mr-2"></i>Add Stock</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="manage-mails-page"><i data-lucide="search" class="inline-block w-5 h-5 mr-2"></i>Search Mails</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="bulk-tools-page"><i data-lucide="database-zap" class="inline-block w-5 h-5 mr-2"></i>Bulk Mail Tools</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="updates-page"><i data-lucide="megaphone" class="inline-block w-5 h-5 mr-2"></i>Manage Updates</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="tutorials-page"><i data-lucide="video" class="inline-block w-5 h-5 mr-2"></i>Manage Tutorials</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="ads-page"><i data-lucide="layout-list" class="inline-block w-5 h-5 mr-2"></i>Manage Ads</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="reviews-page"><i data-lucide="star" class="inline-block w-5 h-5 mr-2"></i>User Reviews</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="support-page"><i data-lucide="life-buoy" class="inline-block w-5 h-5 mr-2"></i>Support Links</a>
+                    <a href="#" class="nav-link block py-3 px-4" data-page="settings-page"><i data-lucide="settings" class="inline-block w-5 h-5 mr-2"></i>App Settings</a>
+                    <a href="#" id="admin-logout-btn" class="block py-3 px-4 mt-8 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="log-out" class="inline-block w-5 h-5 mr-2"></i>Logout</a>
+                </nav>
+            </aside>
+
+            <main class="flex-1 p-8 overflow-y-auto bg-gray-100">
+                <div id="dashboard-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">পেন্ডিং অনুরোধ</h2>
+                            <div class="mt-2 text-lg space-y-1">
+                                <p>ডিপোজিট: <span id="pending-deposits" class="font-bold text-yellow-600">0</span></p>
+                                <p>রিপ্লেস: <span id="pending-replace-requests" class="font-bold text-orange-600">0</span></p>
+                            </div>
+                        </div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">মোট ব্যবহারকারী</h2><p id="total-users" class="text-4xl font-bold mt-2 text-indigo-600">0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">ব্যবহারকারীদের মোট ব্যালেন্স</h2><p id="total-user-balance" class="text-4xl font-bold mt-2 text-purple-600">৳0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">সারা জীবনের মোট বিক্রি</h2><p id="total-sale-income" class="text-4xl font-bold mt-2 text-rose-600">৳0</p></div>
+                    </div>
+                    <div class="grid grid-cols-1 gap-8 mt-8">
+                        <div class="stat-card p-6">
+                            <h2 class="text-xl font-bold mb-4 text-gray-700">Available Mail Stock</h2>
+                            <div id="stock-overview-container" class="space-y-3">
+                                <p>Loading stock data...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="users-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">User Management</h1>
+                    <div class="mb-4"><input type="text" id="user-search" class="w-full max-w-sm px-4 py-2 border rounded-lg" placeholder="Search by name or User ID..."></div>
+                    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead><tr><th>Name</th><th>User ID</th><th>Balance</th><th>Mode</th><th>Status</th><th>Actions</th></tr></thead>
+                            <tbody id="users-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="notifications-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Send Notifications</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="stat-card p-6">
+                            <h2 class="text-xl font-bold mb-4">Send to All Users (Broadcast)</h2>
+                            <div class="space-y-4">
+                                <div><label class="block font-semibold">Title</label><input type="text" id="broadcast-title" class="w-full px-3 py-2 border rounded"></div>
+                                <div><label class="block font-semibold">Message</label><textarea id="broadcast-message" rows="4" class="w-full px-3 py-2 border rounded"></textarea></div>
+                                <button id="send-broadcast-btn" class="w-full btn btn-primary">Send Broadcast</button>
+                            </div>
+                        </div>
+                        <div class="stat-card p-6">
+                            <h2 class="text-xl font-bold mb-4">Send to Individual User</h2>
+                             <div class="space-y-4">
+                                <div><label class="block font-semibold">Recipient User ID</label><input type="text" id="direct-user-id" class="w-full px-3 py-2 border rounded" placeholder="Enter Telegram User ID"></div>
+                                <div><label class="block font-semibold">Title</label><input type="text" id="direct-title" class="w-full px-3 py-2 border rounded"></div>
+                                <div><label class="block font-semibold">Message</label><textarea id="direct-message" rows="4" class="w-full px-3 py-2 border rounded"></textarea></div>
+                                <button id="send-direct-btn" class="w-full btn btn-primary">Send Direct Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="deposits-page" class="page">
+                     <h1 class="text-3xl font-bold mb-6 text-gray-800">Pending Deposit Requests</h1>
+                     <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                        <table>
+                            <thead><tr><th>User Name</th><th>Amount (BDT)</th><th>Method</th><th>Sender No.</th><th>TrxID</th><th>Time</th><th>Actions</th></tr></thead>
+                            <tbody id="deposits-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="replace-requests-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Pending Replace Requests</h1>
+                    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                        <table>
+                            <thead><tr><th>User</th><th>Mail Info</th><th>Reason & Proof</th><th>Time</th><th>Actions</th></tr></thead>
+                            <tbody id="replace-requests-table-body"></tbody>
+                        </table>
+                    </div>
+               </div>
+
+                <div id="purchases-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Mail Purchase History</h1>
+                    <div class="mb-4">
+                        <input type="text" id="purchase-search" class="w-full max-w-sm px-4 py-2 border rounded-lg" placeholder="Search by Sale ID (e.g., 123)...">
+                    </div>
+                    <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                       <table>
+                           <thead><tr><th>Sale ID</th><th>Date</th><th>User Name</th><th>Mail Type</th><th>Mail Details</th><th>Cost</th></tr></thead>
+                           <tbody id="purchases-table-body"></tbody>
+                       </table>
+                   </div>
+                </div>
+
+                <div id="stock-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Add Mail Stock</h1>
+                    <div class="stat-card p-6">
+                        <h3 class="font-semibold text-xl text-gray-800 mb-4">Add New Mails</h3>
+                        <p class="text-sm text-gray-600 mb-4">ফরম্যাট: <code class="bg-gray-200 p-1 rounded text-gray-700">email/password/refresh_token/client_id</code></p>
+                        <div class="mb-4">
+                            <label for="mail-type-select-add" class="block text-sm font-medium text-gray-700 mb-1">Select Mail Type</label>
+                            <select id="mail-type-select-add" class="w-full p-3 rounded-lg border border-gray-300"></select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="mail-data-textarea" class="block text-sm font-medium text-gray-700 mb-1">Mail Data (one per line)</label>
+                            <textarea id="mail-data-textarea" rows="12" placeholder="mail@example.com/password/refresh_token/client_id" class="w-full p-3 rounded-lg border border-gray-300 font-mono text-xs"></textarea>
+                        </div>
+                        <button id="add-mails-btn" class="btn btn-primary w-full">Add Mails to Stock</button>
+                    </div>
+                </div>
+                
+                <div id="manage-mails-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Search Individual Mails</h1>
+                    <div class="stat-card p-6">
+                        <p class="text-gray-600 mb-4">যেকোনো মেইল খুঁজে বের করতে এবং মুছে ফেলতে এখানে ইমেল আইডি দিয়ে সার্চ করুন। সিস্টেমটি সমস্ত উপলব্ধ স্টক থেকে মেইলটি খুঁজে বের করবে।</p>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <input type="text" id="global-mail-search-input" class="w-full p-3 rounded-lg border border-gray-300" placeholder="Search by full email address...">
+                            <button id="global-mail-search-btn" class="btn btn-primary">Search</button>
+                        </div>
+                        <div id="global-mail-search-results-container" class="mt-6">
+                            <p class="text-gray-500">Enter an email and click search to find a mail across all categories.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="bulk-tools-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Bulk Mail Tools</h1>
+                    <div class="stat-card p-6">
+                        <p class="text-gray-600 mb-4">প্রতিটি ক্যাটাগরির বিক্রি না হওয়া (Unsold) মেইল একসাথে কপি বা ডিলিট করুন। <strong class="text-red-600">ডিলিট বাটন সাবধানে ব্যবহার করুন।</strong></p>
+                        <div id="bulk-tools-container" class="space-y-4">
+                            <p class="text-gray-500">Loading mail categories...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="updates-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Updates</h1>
+                     <div class="stat-card p-6">
+                        <h2 class="text-xl font-bold mb-4" id="update-form-title">Add New Update</h2>
+                        <form id="update-form" class="space-y-4">
+                            <input type="hidden" id="update-id">
+                            <div><label class="block font-semibold">Title</label><input type="text" id="update-title" class="w-full px-3 py-2 border rounded" required></div>
+                            <div><label class="block font-semibold">Content / Message</label><textarea id="update-content" rows="4" class="w-full px-3 py-2 border rounded"></textarea></div>
+                            <div><label class="block font-semibold">Image URL</label><input type="text" id="update-imageUrl" class="w-full px-3 py-2 border rounded" required></div>
+                            <div class="flex space-x-2">
+                                <button type="submit" id="update-submit-btn" class="w-full btn btn-primary">Post Update</button>
+                                <button type="button" id="update-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="bg-white shadow-md rounded-lg overflow-x-auto mt-8">
+                        <h2 class="text-xl font-bold p-4">Current Updates</h2>
+                        <table>
+                            <thead><tr><th>Title</th><th>Posted On</th><th>Actions</th></tr></thead>
+                            <tbody id="updates-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="tutorials-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Tutorials</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-1">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4" id="tutorial-form-title">Create New Tutorial</h2>
+                                <form id="tutorial-form" class="space-y-4">
+                                    <input type="hidden" id="tutorial-id">
+                                    <div><label class="block font-semibold">Title</label><input type="text" id="tutorial-title" class="w-full px-3 py-2 border rounded" required></div>
+                                    <div><label class="block font-semibold">YouTube Watch URL</label><input type="url" id="tutorial-youtubeWatchUrl" class="w-full px-3 py-2 border rounded" placeholder="e.g., https://www.youtube.com/watch?v=VIDEO_ID"></div>
+                                    <div><label class="block font-semibold">Banner Image URL (Optional)</label><input type="url" id="tutorial-bannerImageUrl" class="w-full px-3 py-2 border rounded" placeholder="Link to a custom thumbnail image"></div>
+                                    <div><label class="block font-semibold">Order (for display)</label><input type="number" id="tutorial-order" class="w-full px-3 py-2 border rounded" value="0"></div>
+                                    <div class="flex space-x-2">
+                                        <button type="submit" id="tutorial-submit-btn" class="w-full btn btn-primary">Create Tutorial</button>
+                                        <button type="button" id="tutorial-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Current Tutorials</h2>
+                                <div id="tutorials-list" class="space-y-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ads-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Ads</h1>
+                    <p class="text-gray-600 mb-6">এই বিজ্ঞাপনগুলি আপনার অ্যাপের "Account" -> "বিজ্ঞাপন" ট্যাবে দেখানো হবে।</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-1">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4" id="ad-form-title">Create New Ad</h2>
+                                <form id="ad-form" class="space-y-4">
+                                    <input type="hidden" id="ad-id">
+                                    <div><label class="block font-semibold">Title</label><input type="text" id="ad-title" class="w-full px-3 py-2 border rounded" required></div>
+                                    <div><label class="block font-semibold">Description</label><textarea id="ad-description" rows="3" class="w-full px-3 py-2 border rounded"></textarea></div>
+                                    <div><label class="block font-semibold">"GO!" Link URL</label><input type="url" id="ad-linkUrl" class="w-full px-3 py-2 border rounded" placeholder="https://..." required></div>
+                                    <div><label class="block font-semibold">Image URL (Optional)</label><input type="url" id="ad-imageUrl" class="w-full px-3 py-2 border rounded" placeholder="Link to a custom image"></div>
+                                    <div><label class="block font-semibold">Order (for display)</label><input type="number" id="ad-order" class="w-full px-3 py-2 border rounded" value="0"></div>
+                                    <div class="flex space-x-2">
+                                        <button type="submit" id="ad-submit-btn" class="w-full btn btn-primary">Create Ad</button>
+                                        <button type="button" id="ad-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Current Ads</h2>
+                                <div id="ads-list" class="space-y-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reviews-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage User Reviews</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-1">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Add New Review</h2>
+                                <form id="review-form" class="space-y-4">
+                                    <div><label class="block font-semibold">User Name</label><input type="text" id="review-name" class="w-full px-3 py-2 border rounded" required></div>
+                                    <div><label class="block font-semibold">Rating (1-5)</label><input type="number" id="review-rating" class="w-full px-3 py-2 border rounded" min="1" max="5" required></div>
+                                    <div><label class="block font-semibold">Review Text</label><textarea id="review-text" rows="3" class="w-full px-3 py-2 border rounded" required></textarea></div>
+                                    <div><label class="block font-semibold">User Image URL</label><input type="url" id="review-imageUrl" class="w-full px-3 py-2 border rounded" placeholder="Leave blank for default initial"></div>
+                                    <button type="submit" class="w-full btn btn-primary">Add Review</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2">
+                             <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                                <table class="min-w-full">
+                                    <thead><tr><th>User Name</th><th>Rating</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead>
+                                    <tbody id="reviews-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="support-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Support Links</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-1">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4" id="support-form-title">Add New Support Link</h2>
+                                <form id="support-form" class="space-y-4">
+                                    <input type="hidden" id="support-id">
+                                    <div><label class="block font-semibold">Channel Name</label><input type="text" id="support-name" class="w-full px-3 py-2 border rounded" placeholder="e.g., Telegram Support" required></div>
+                                    <div><label class="block font-semibold">Icon URL</label><input type="url" id="support-iconUrl" class="w-full px-3 py-2 border rounded" placeholder="https://i.postimg.cc/....png" required></div>
+                                    <div><label class="block font-semibold">Link URL</label><input type="url" id="support-link" class="w-full px-3 py-2 border rounded" placeholder="https://t.me/username" required></div>
+                                    <div><label class="block font-semibold">Order</label><input type="number" id="support-order" class="w-full px-3 py-2 border rounded" value="0"></div>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="checkbox" id="support-isActive" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
+                                        <label for="support-isActive" class="font-semibold">Is Active</label>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button type="submit" id="support-submit-btn" class="w-full btn btn-primary">Save Link</button>
+                                        <button type="button" id="support-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2">
+                            <div class="stat-card p-6">
+                                <h2 class="text-xl font-bold mb-4">Current Support Links</h2>
+                                <div id="support-links-list" class="space-y-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings-page" class="page">
+                    <h1 class="text-3xl font-bold mb-6 text-gray-800">App Settings</h1>
+                    <div class="space-y-8">
+
+                        <!-- NEW: General Settings Card -->
+                        <div class="stat-card p-6">
+                             <h2 class="text-xl font-bold mb-4">Business & Deposit Rules</h2>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Minimum Deposit Amount</label>
+                                    <input type="number" id="setting-min-deposit" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 50">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Business Mode Discount (%)</label>
+                                    <input type="number" id="setting-business-discount" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 1 for 1%">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Business Mode Min Balance</label>
+                                    <input type="number" id="setting-business-min-balance" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 80">
+                                </div>
+                                 <div>
+                                    <label class="block text-sm font-medium text-gray-700">Business Mode Daily Req.</label>
+                                    <input type="number" id="setting-business-daily-req" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 20">
+                                </div>
+                                 <div>
+                                    <label class="block text-sm font-medium text-gray-700">Business Mode Penalty</label>
+                                    <input type="number" id="setting-business-penalty" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 5">
+                                </div>
+                             </div>
+                        </div>
+
+                        <div class="stat-card p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-bold">Mail Shop Items</h2>
+                                <button id="add-mail-type-btn" class="btn btn-primary">Add New Mail Type</button>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4">এখানে আপনার অ্যাপে বিক্রি হওয়া প্রতিটি মেইল আইটেম যোগ করুন। সকল তথ্য সঠিকভাবে দিন।</p>
+                            <div id="mail-types-container" class="space-y-6"></div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button id="save-all-settings-btn" class="w-full lg:w-auto btn btn-primary px-8 py-3 text-lg">Save All Settings</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="balance-modal" class="modal-overlay hidden">
+        <div class="modal-content !w-[500px]">
+            <h2 id="balance-modal-title" class="text-2xl font-bold mb-6">Update Balance</h2>
+            <form id="balance-form" class="space-y-4">
+                <input type="hidden" id="balance-user-id">
+                <p class="text-lg">Current Balance: <span id="current-balance-display" class="font-bold"></span></p>
+                <div>
+                    <label class="block font-semibold">Action</label>
+                    <select id="balance-action" class="w-full p-2 border rounded">
+                        <option value="add">Add to Balance</option>
+                        <option value="deduct">Deduct from Balance</option>
+                        <option value="set">Set New Balance</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold">Amount (BDT)</label>
+                    <input type="number" id="balance-amount" step="0.01" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" id="balance-modal-cancel" class="btn bg-gray-300">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Balance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="global-mail-search-modal" class="modal-overlay hidden">
+        <div class="modal-content !w-[900px]">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Mail Search Results</h2>
+                <button id="global-search-modal-close" class="p-2 text-3xl font-bold">&times;</button>
+            </div>
+            <p class="mb-4">Email: <strong id="global-search-email-display" class="font-mono"></strong></p>
+            <div id="global-search-results-list" class="space-y-3 mb-6 max-h-[50vh] overflow-y-auto"></div>
+            <button id="global-search-delete-all-btn" class="btn btn-danger w-full">Delete All Found Mails</button>
+        </div>
+    </div>
+
+    <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] p-4"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-xl"><p id="alert-message" class="mb-4 text-gray-800"></p><button id="alert-ok-btn" class="btn btn-primary px-6">OK</button></div></div>
+    <div id="custom-confirm" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] p-4"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-xl"><p id="confirm-message" class="mb-6 text-gray-800 whitespace-pre-wrap"></p><div class="flex justify-center space-x-4"><button id="confirm-cancel-btn" class="btn bg-gray-300 text-gray-800 px-6">Cancel</button><button id="confirm-ok-btn" class="btn btn-danger px-6">Confirm</button></div></div></div>
+    
+    <script type="module">
+        const firebaseConfig = {
+          apiKey: "AIzaSyClz7XBgYHuiF70711CSb6DzDULzN4Okc8",
+          authDomain: "tech-mail-market.firebaseapp.com",
+          databaseURL: "https://tech-mail-market-default-rtdb.firebaseio.com",
+          projectId: "tech-mail-market",
+          storageBucket: "tech-mail-market.firebasestorage.app",
+          messagingSenderId: "28333491796",
+          appId: "1:28333491796:web:caa5daa598b72550830fc1"
+        };
+        
+        const ADMIN_UIDS = ["H8Nrwo2lCOXVBTqTsynmAeOJSY52"]; 
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, doc, getDoc, setDoc, updateDoc, query, where, onSnapshot, addDoc, serverTimestamp, deleteDoc, writeBatch, getDocs, runTransaction, orderBy, limit, getCountFromServer, increment, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- Global State ---
+        const loginView = document.getElementById('admin-login-view');
+        const dashboardView = document.getElementById('admin-dashboard');
+        let appConfig = {};
+        let activeListeners = {};
+        let allPurchases = [];
+        let globalFoundMails = [];
+        
+        // --- Initialization ---
+        window.onload = () => {
+            lucide.createIcons();
+            setupEventListeners();
+            onAuthStateChanged(auth, (user) => {
+                if (user && ADMIN_UIDS.includes(user.uid)) {
+                    loginView.style.display = 'none';
+                    dashboardView.style.display = 'block';
+                    navigateTo('dashboard-page');
+                } else {
+                    if (user) signOut(auth);
+                    loginView.style.display = 'flex';
+                    dashboardView.style.display = 'none';
+                }
+            });
+        };
+        
+        // --- Navigation & Page Loading ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId)?.classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.toggle('active', link.dataset.page === pageId);
+            });
+            
+            Object.values(activeListeners).forEach(unsubscribe => unsubscribe());
+            activeListeners = {};
+
+            const pageFunctions = {
+                'dashboard-page': loadDashboardData,
+                'users-page': () => loadUsers(),
+                'deposits-page': loadDeposits,
+                'replace-requests-page': loadReplaceRequests,
+                'purchases-page': loadMailPurchases,
+                'stock-page': loadAddStockPage,
+                'bulk-tools-page': loadBulkToolsPage,
+                'updates-page': loadUpdates,
+                'tutorials-page': loadTutorials,
+                'ads-page': loadAds,
+                'reviews-page': loadUserReviews,
+                'settings-page': loadSettings,
+                'support-page': loadSupportLinks,
+            };
+            pageFunctions[pageId]?.();
+            lucide.createIcons();
+        }
+
+        async function fetchAppConfig() {
+            try {
+                const configRef = doc(db, "config", "main");
+                const docSnap = await getDoc(configRef);
+                const defaults = {
+                    mails: [], minDeposit: 50, businessDiscountPercent: 1,
+                    businessModeMinBalance: 80, businessModeDailyReq: 20, businessModePenalty: 5
+                };
+                appConfig = docSnap.exists() ? { ...defaults, ...docSnap.data() } : defaults;
+                return appConfig;
+            } catch (error) {
+                console.error("Error fetching app config:", error);
+                showAlert("Could not load app configuration.");
+                return { mails: [] };
+            }
+        }
+
+        // --- Event Listeners Setup ---
+        function setupEventListeners() {
+            document.getElementById('admin-login-btn').addEventListener('click', handleAdminLogin);
+            document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
+            document.getElementById('user-search').addEventListener('input', (e) => loadUsers(e.target.value));
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => { e.preventDefault(); navigateTo(link.dataset.page); });
+            });
+            document.getElementById('send-broadcast-btn').addEventListener('click', handleBroadcastNotification);
+            document.getElementById('send-direct-btn').addEventListener('click', handleDirectNotification);
+            document.getElementById('update-form').addEventListener('submit', handleUpdateSubmit);
+            document.getElementById('update-cancel-btn').addEventListener('click', resetUpdateForm);
+            document.getElementById('save-all-settings-btn').addEventListener('click', saveAllSettings);
+            document.getElementById('add-mail-type-btn').addEventListener('click', () => addMailTypeToUI());
+            document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
+            document.getElementById('balance-modal-cancel').addEventListener('click', () => document.getElementById('balance-modal').classList.add('hidden'));
+            document.getElementById('balance-form').addEventListener('submit', handleBalanceUpdate);
+            document.getElementById('tutorial-form').addEventListener('submit', handleTutorialFormSubmit);
+            document.getElementById('tutorial-cancel-btn').addEventListener('click', resetTutorialForm);
+            document.getElementById('ad-form').addEventListener('submit', handleAdFormSubmit);
+            document.getElementById('ad-cancel-btn').addEventListener('click', resetAdForm);
+            document.getElementById('review-form').addEventListener('submit', handleAddReview);
+            document.getElementById('alert-ok-btn').onclick = () => document.getElementById('custom-alert').classList.add('hidden');
+            document.getElementById('support-form').addEventListener('submit', handleSupportFormSubmit);
+            document.getElementById('support-cancel-btn').addEventListener('click', resetSupportForm);
+            document.getElementById('purchase-search').addEventListener('input', (e) => renderPurchases(e.target.value));
+            document.getElementById('global-mail-search-btn').addEventListener('click', handleGlobalMailSearch);
+            document.getElementById('global-search-modal-close').addEventListener('click', () => document.getElementById('global-mail-search-modal').classList.add('hidden'));
+            document.getElementById('global-search-delete-all-btn').addEventListener('click', handleDeleteAllFoundMails);
+        }
+
+        // --- Authentication ---
+        async function handleAdminLogin() {
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            if(!email || !password) return showAlert('Please enter email and password.');
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                if (!ADMIN_UIDS.includes(userCredential.user.uid)) {
+                    await signOut(auth);
+                    showAlert("You are not authorized to access this panel.");
+                }
+            } catch (error) { showAlert("Login failed: " + error.message); }
+        }
+        
+        // --- Dashboard Logic ---
+        async function loadDashboardData() {
+            try {
+                const [ usersSnap, pendingDepositsSnap, pendingReplaceSnap, allPurchasesSnap ] = await Promise.all([
+                    getDocs(collection(db, "users")),
+                    getCountFromServer(query(collection(db, "deposits"), where("status", "==", "pending"))),
+                    getCountFromServer(query(collection(db, "replace_requests"), where("status", "==", "pending"))),
+                    getDocs(collection(db, "mail_purchases"))
+                ]);
+                document.getElementById('total-users').textContent = usersSnap.size;
+                const totalUserBalance = usersSnap.docs.reduce((sum, doc) => sum + (doc.data().balance || 0), 0);
+                document.getElementById('total-user-balance').textContent = `৳${totalUserBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('pending-deposits').textContent = pendingDepositsSnap.data().count;
+                document.getElementById('pending-replace-requests').textContent = pendingReplaceSnap.data().count;
+                const totalSaleIncome = allPurchasesSnap.docs.reduce((sum, doc) => sum + doc.data().cost, 0);
+                document.getElementById('total-sale-income').textContent = `৳${totalSaleIncome.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            } catch (error) {
+                console.error("Error loading dashboard data:", error);
+                showAlert("Failed to load dashboard statistics.");
+            }
+            loadStockOverview();
+        }
+
+        async function loadStockOverview() {
+            const container = document.getElementById('stock-overview-container');
+            container.innerHTML = `<p>Loading stock data...</p>`;
+            await fetchAppConfig();
+            if (!appConfig.mails || appConfig.mails.length === 0) { container.innerHTML = `<p>No mail types configured in settings.</p>`; return; }
+            const stockPromises = appConfig.mails.map(async (mail) => {
+                try {
+                    const stockQuery = query(collection(db, mail.stockKey), where("isSold", "==", false));
+                    const snapshot = await getCountFromServer(stockQuery);
+                    return { name: mail.type, count: snapshot.data().count };
+                } catch (e) { return { name: mail.type, count: 'Error' }; }
+            });
+            const stockCounts = await Promise.all(stockPromises);
+            container.innerHTML = stockCounts.map(stock => `
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded-md">
+                    <span class="font-semibold text-gray-700">${stock.name}</span>
+                    <span class="font-bold text-lg ${stock.count > 10 ? 'text-green-600' : 'text-red-600'}">${stock.count} pcs</span>
+                </div>`).join('');
+        }
+        
+        // --- User Management ---
+        async function loadUsers(searchTerm = '') {
+            const tableBody = document.getElementById('users-table-body');
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+            const q = query(collection(db, "users"), orderBy("balance", "desc"));
+            const snapshot = await getDocs(q);
+            let users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                users = users.filter(user => (user.name || '').toLowerCase().includes(term) || (user.tgChatId || '').includes(term));
+            }
+            renderUsersTable(users);
+        }
+
+        function renderUsersTable(users) {
+            const tableBody = document.getElementById('users-table-body');
+            if (users.length === 0) { tableBody.innerHTML = `<tr><td colspan="6" class="text-center">No users found.</td></tr>`; return; }
+            tableBody.innerHTML = users.map(user => {
+                const isBlocked = user.isBlocked || false;
+                const profileMode = user.profileMode || 'personal';
+                const userDataString = JSON.stringify({ id: user.id, name: user.name || 'N/A', balance: user.balance || 0 }).replace(/"/g, "'");
+                
+                return `<tr>
+                    <td>${user.name || 'N/A'}</td><td>${user.tgChatId}</td>
+                    <td>৳${(user.balance || 0).toFixed(2)}</td>
+                    <td><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${profileMode === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}">${profileMode.charAt(0).toUpperCase() + profileMode.slice(1)}</span></td>
+                    <td><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${isBlocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
+                    <td class="space-x-2 whitespace-nowrap">
+                        <button class="btn text-xs ${isBlocked ? 'btn-success' : 'btn-danger'}" onclick="window.toggleBlockUser('${user.id}', ${isBlocked})">${isBlocked ? 'Unblock' : 'Block'}</button>
+                        <button class="btn text-xs btn-primary" onclick="window.openBalanceModal(${userDataString})">Balance</button>
+                    </td></tr>`;
+            }).join('');
+        }
+
+        window.toggleBlockUser = (userId, isBlocked) => {
+            const action = isBlocked ? 'unblock' : 'block';
+            showConfirm(`Are you sure you want to ${action} this user?`, async () => {
+                await updateDoc(doc(db, "users", userId), { isBlocked: !isBlocked });
+                showAlert(`User successfully ${action}ed.`);
+                loadUsers(document.getElementById('user-search').value);
+            });
+        };
+        
+        window.openBalanceModal = (userData) => {
+            document.getElementById('balance-user-id').value = userData.id;
+            document.getElementById('balance-modal-title').textContent = `Update Balance for ${userData.name}`;
+            document.getElementById('current-balance-display').textContent = `৳${(userData.balance || 0).toFixed(2)}`;
+            document.getElementById('balance-form').reset();
+            document.getElementById('balance-modal').classList.remove('hidden');
+        };
+
+        async function handleBalanceUpdate(e) {
+            e.preventDefault();
+            const userId = document.getElementById('balance-user-id').value;
+            const action = document.getElementById('balance-action').value;
+            const amount = parseFloat(document.getElementById('balance-amount').value);
+            if (isNaN(amount) || amount < 0) return showAlert("Please enter a valid amount.");
+            const userRef = doc(db, "users", userId);
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    if (!userDoc.exists()) throw new Error("User not found.");
+                    const currentBalance = userDoc.data().balance || 0;
+                    let newBalance = (action === 'add') ? currentBalance + amount : (action === 'deduct') ? currentBalance - amount : amount;
+                    if (newBalance < 0) newBalance = 0;
+                    transaction.update(userRef, { balance: newBalance });
+                });
+                showAlert("User balance updated successfully.");
+                document.getElementById('balance-modal').classList.add('hidden');
+                loadUsers(document.getElementById('user-search').value);
+            } catch (error) { showAlert("Failed to update balance: " + error.message); }
+        }
+        
+        // --- Requests Management ---
+        function loadDeposits() {
+            const tableBody = document.getElementById('deposits-table-body');
+            tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Loading...</td></tr>`;
+            const q = query(collection(db, "deposits"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
+            activeListeners['deposits'] = onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="7" class="text-center">No pending deposits.</td></tr>`; return; }
+                tableBody.innerHTML = snapshot.docs.map(docSnap => {
+                    const req = docSnap.data();
+                    return `<tr>
+                        <td>${req.userName || 'N/A'}</td><td>৳${req.amount}</td><td>${req.method}</td>
+                        <td>${req.senderNumber}</td><td>${req.transactionId}</td>
+                        <td>${req.requestedAt?.toDate().toLocaleString() || 'N/A'}</td>
+                        <td class="space-x-2">
+                            <button class="btn btn-success text-xs" onclick="window.handleDeposit('${docSnap.id}', '${req.userId}', ${req.amount}, 'approved')">Approve</button>
+                            <button class="btn btn-danger text-xs" onclick="window.handleDeposit('${docSnap.id}', '${req.userId}', 0, 'rejected')">Reject</button>
+                        </td></tr>`;
+                }).join('');
+            });
+        }
+        
+        window.handleDeposit = (depositId, userId, amount, newStatus) => {
+            showConfirm(`Are you sure you want to ${newStatus} this ৳${amount} deposit?`, async () => {
+                const depositRef = doc(db, "deposits", depositId);
+                const userRef = userId ? doc(db, "users", userId) : null;
+                try {
+                    await runTransaction(db, async (transaction) => {
+                        transaction.update(depositRef, { status: newStatus, processedAt: serverTimestamp() });
+                        if (newStatus === 'approved' && userRef) { transaction.update(userRef, { balance: increment(amount) }); }
+                    });
+                    await addDoc(collection(db, "notifications"), {
+                        recipientId: userId, title: `Deposit ${newStatus}`,
+                        message: `Your deposit request of ৳${amount} has been ${newStatus}.`, createdAt: serverTimestamp()
+                    });
+                    showAlert(`Deposit has been ${newStatus}.`);
+                } catch (e) { showAlert("Operation failed: " + e.message); }
+            });
+        };
+        
+        function loadReplaceRequests() {
+            const tableBody = document.getElementById('replace-requests-table-body');
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
+            const q = query(collection(db, "replace_requests"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
+            activeListeners['replace'] = onSnapshot(q, (snapshot) => {
+                if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No pending replace requests.</td></tr>`; return; }
+                tableBody.innerHTML = snapshot.docs.map(docSnap => {
+                    const req = docSnap.data();
+                    const proofLink = req.proof ? `<a href="${req.proof}" target="_blank" class="text-blue-600 hover:underline">View Proof</a>` : 'No proof';
+                    return `<tr>
+                        <td>${req.userName}<br><span class="text-xs text-gray-500">${req.userId}</span></td>
+                        <td>${req.mailType}<br><span class="text-xs text-gray-500">Sale ID: ${req.saleId}</span></td>
+                        <td class="text-sm">${req.reason}<br><span class="text-xs">${proofLink}</span></td>
+                        <td>${req.requestedAt?.toDate().toLocaleString() || 'N/A'}</td>
+                        <td class="space-x-2">
+                            <button class="btn btn-success text-xs" onclick="window.handleApproveRequest('${docSnap.id}', '${req.userId}', ${req.cost}, '${req.purchaseId}', '${req.saleId || ''}', '${req.mailType || ''}')">Approve</button>
+                            <button class="btn btn-danger text-xs" onclick="window.handleRejectRequest('${docSnap.id}', '${req.userId}', '${req.saleId || ''}', '${req.mailType || ''}')">Reject</button>
+                        </td></tr>`;
+                }).join('');
+            });
+        }
+
+        window.handleApproveRequest = (requestId, userId, cost, purchaseId, saleId, mailType) => {
+            showConfirm(`Approve this request and refund ৳${cost} to user ${userId}?`, async () => {
+                try {
+                    await runTransaction(db, async (transaction) => {
+                        transaction.update(doc(db, "replace_requests", requestId), { status: 'approved', resolvedAt: serverTimestamp() });
+                        transaction.update(doc(db, "users", userId), { balance: increment(cost) });
+                        transaction.update(doc(db, "mail_purchases", purchaseId), { isRefunded: true });
+                    });
+                    const mailTypeName = mailType.split(' (ID:')[0];
+                    await addDoc(collection(db, "notifications"), {
+                        recipientId: userId, title: "✅ Report Approved",
+                        message: `Your report for ${mailTypeName} (ID: ${saleId}) has been approved. ৳${cost.toFixed(2)} has been refunded.`, createdAt: serverTimestamp()
+                    });
+                    showAlert("Request approved and balance refunded.");
+                } catch (e) { showAlert(`Failed to approve: ${e.message}`); }
+            });
+        };
+
+        window.handleRejectRequest = (requestId, userId, saleId, mailType) => {
+            showConfirm("Reject this request? A penalty might be applied to the user.", async () => {
+                const userRef = doc(db, "users", userId);
+                try {
+                    await runTransaction(db, async (transaction) => {
+                        const userSnap = await transaction.get(userRef);
+                        if (!userSnap.exists()) throw new Error("User not found");
+                        const userData = userSnap.data();
+                        const today = new Date().toISOString().slice(0, 10);
+                        let dailyRejections = userData.dailyRejections && userData.dailyRejections.date === today ? userData.dailyRejections : { date: today, count: 0 };
+                        dailyRejections.count += 1;
+                        const updates = { dailyRejections };
+                        if (dailyRejections.count >= 5) {
+                            updates.isBlocked = true;
+                            updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 3600000); // 5 hours
+                        }
+                        transaction.update(userRef, updates);
+                        transaction.update(doc(db, "replace_requests", requestId), { status: 'rejected', resolvedAt: serverTimestamp() });
+                    });
+                    const mailTypeName = mailType.split(' (ID:')[0];
+                    await addDoc(collection(db, "notifications"), {
+                        recipientId: userId, title: "❌ Report Rejected",
+                        message: `Your report for ${mailTypeName} (ID: ${saleId}) has been rejected.`, createdAt: serverTimestamp()
+                    });
+                    showAlert("Request rejected. User's penalty status updated.");
+                } catch (e) { showAlert(`Failed to reject: ${e.message}`); }
+            });
+        };
+
+        // --- Content Management (Stock, Purchases, Mails etc.) ---
+        async function loadMailPurchases() {
+            const tableBody = document.getElementById('purchases-table-body');
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
+            const q = query(collection(db, "mail_purchases"), orderBy("purchasedAt", "desc"), limit(200));
+            const usersMap = new Map();
+            const [purchasesSnap, usersSnap] = await Promise.all([getDocs(q), getDocs(collection(db, "users"))]);
+            usersSnap.forEach(doc => usersMap.set(doc.id, doc.data().name || doc.id));
+            allPurchases = purchasesSnap.docs.map(docSnap => {
+                const p = docSnap.data();
+                return {
+                    saleId: p.saleId || 'N/A',
+                    date: p.purchasedAt?.toDate().toLocaleString() || 'N/A',
+                    userName: usersMap.get(p.userId) || p.userId,
+                    mailType: p.type === 'bulk' ? `${p.mailType} (Bulk)` : p.mailType,
+                    mailDetails: p.type === 'bulk' ? `${p.quantity || p.mails.length} items` : [p.mail, p.password].filter(Boolean).join(' | '),
+                    cost: `৳${p.cost.toFixed(2)}`
+                };
+            });
+            renderPurchases();
+        }
+
+        function renderPurchases(searchTerm = '') {
+            const tableBody = document.getElementById('purchases-table-body');
+            let filteredPurchases = allPurchases;
+            if (searchTerm) { filteredPurchases = allPurchases.filter(p => String(p.saleId).includes(searchTerm)); }
+            if (filteredPurchases.length === 0) { tableBody.innerHTML = `<tr><td colspan="6" class="text-center">No purchases found.</td></tr>`; return; }
+            tableBody.innerHTML = filteredPurchases.map(p => `<tr>
+                <td>#${p.saleId}</td><td>${p.date}</td><td>${p.userName}</td>
+                <td>${p.mailType}</td><td class="text-xs font-mono">${p.mailDetails}</td><td>${p.cost}</td>
+            </tr>`).join('');
+        }
+        
+        async function loadAddStockPage() {
+            await fetchAppConfig();
+            const selectEl = document.getElementById('mail-type-select-add');
+            selectEl.innerHTML = '<option value="">Select mail type...</option>';
+            appConfig.mails.forEach(mail => { selectEl.innerHTML += `<option value="${mail.stockKey}">${mail.type}</option>`; });
+        }
+        
+        async function handleAddMails() {
+            const stockKey = document.getElementById('mail-type-select-add').value;
+            const mailDataRaw = document.getElementById('mail-data-textarea').value;
+            if (!stockKey || !mailDataRaw.trim()) return showAlert("Please select a mail type and provide mail data.");
+            const lines = mailDataRaw.trim().split(/\r?\n/).filter(line => line.trim() !== '');
+            if (lines.length === 0) return showAlert("No valid mail data found.");
+            
+            showConfirm(`Are you sure you want to add ${lines.length} mails to the '${stockKey}' stock?`, async () => {
+                let addedCount = 0; const batchSize = 400; 
+                for (let i = 0; i < lines.length; i += batchSize) {
+                    const batch = writeBatch(db);
+                    const chunk = lines.slice(i, i + batchSize);
+                    chunk.forEach(line => {
+                        const parts = line.trim().split('/');
+                        if (parts.length >= 2) {
+                            batch.set(doc(collection(db, stockKey)), { 
+                                email: parts[0] || '', password: parts[1] || '', 
+                                refresh_token: parts[2] || '', client_id: parts[3] || '', 
+                                isSold: false, createdAt: serverTimestamp() 
+                            }); addedCount++;
+                        }
+                    });
+                    await batch.commit();
+                }
+                showAlert(`Successfully added ${addedCount} new mails.`);
+                document.getElementById('mail-data-textarea').value = '';
+            });
+        }
+        
+        // --- Global Mail Search & Bulk Tools ---
+        async function handleGlobalMailSearch() {
+            const email = document.getElementById('global-mail-search-input').value.trim();
+            const resultsContainer = document.getElementById('global-mail-search-results-container');
+            const searchBtn = document.getElementById('global-mail-search-btn');
+            if (!email) { resultsContainer.innerHTML = '<p class="text-red-500">Please enter an email address.</p>'; return; }
+            searchBtn.disabled = true; searchBtn.textContent = 'Searching...';
+            resultsContainer.innerHTML = '<p>Searching...</p>';
+            await fetchAppConfig(); globalFoundMails = [];
+            const searchPromises = appConfig.mails.map(async (mailType) => {
+                try {
+                    const q = query(collection(db, mailType.stockKey), where("email", "==", email));
+                    const snapshot = await getDocs(q);
+                    snapshot.forEach(doc => { globalFoundMails.push({ id: doc.id, stockKey: mailType.stockKey, type: mailType.type, ...doc.data() }); });
+                } catch (e) { console.error(`Error in ${mailType.stockKey}:`, e.message); }
+            });
+            await Promise.all(searchPromises);
+            searchBtn.disabled = false; searchBtn.textContent = 'Search';
+            if (globalFoundMails.length > 0) {
+                document.getElementById('global-search-email-display').textContent = email;
+                document.getElementById('global-search-results-list').innerHTML = globalFoundMails.map(mail => `
+                    <div class="p-3 bg-gray-50 border rounded-lg flex justify-between items-center" id="found-mail-${mail.id}">
+                        <div><p><strong>Category:</strong> ${mail.type} | <strong>Status:</strong> <span class="font-semibold ${mail.isSold ? 'text-red-500' : 'text-green-600'}">${mail.isSold ? 'Sold' : 'Unsold'}</span></p></div>
+                        <button class="btn btn-danger text-xs" onclick="window.deleteSingleFoundMail('${mail.stockKey}', '${mail.id}')">Delete</button>
+                    </div>`).join('');
+                document.getElementById('global-mail-search-modal').classList.remove('hidden');
+                resultsContainer.innerHTML = `<p class="text-green-600 font-semibold">${globalFoundMails.length} mail(s) found.</p>`;
+            } else { resultsContainer.innerHTML = '<p class="text-yellow-600 font-semibold">No mail found.</p>'; }
+        }
+        
+        window.deleteSingleFoundMail = (stockKey, docId) => { showConfirm("Delete this specific mail?", async () => { await deleteDoc(doc(db, stockKey, docId)); showAlert("Mail deleted."); document.getElementById(`found-mail-${docId}`)?.remove(); }); };
+        
+        function handleDeleteAllFoundMails() {
+            if (globalFoundMails.length === 0) return;
+            showConfirm(`Delete all ${globalFoundMails.length} found instances?`, async () => {
+                const batch = writeBatch(db);
+                globalFoundMails.forEach(mail => batch.delete(doc(db, mail.stockKey, mail.id)));
+                await batch.commit();
+                showAlert(`Deleted all ${globalFoundMails.length} mails.`);
+                document.getElementById('global-mail-search-modal').classList.add('hidden');
+            });
+        }
+        
+        async function loadBulkToolsPage() {
+            const container = document.getElementById('bulk-tools-container');
+            container.innerHTML = `<p>Loading...</p>`;
+            await fetchAppConfig();
+            const categories = await Promise.all(appConfig.mails.map(async (mail) => {
+                const [unsoldSnap, soldSnap] = await Promise.all([
+                    getCountFromServer(query(collection(db, mail.stockKey), where("isSold", "==", false))),
+                    getCountFromServer(query(collection(db, mail.stockKey), where("isSold", "==", true)))
+                ]);
+                return { ...mail, unsoldCount: unsoldSnap.data().count, soldCount: soldSnap.data().count };
+            }));
+            container.innerHTML = categories.map(cat => `
+                <div class="p-4 border rounded-lg bg-gray-50">
+                    <h3 class="text-xl font-bold">${cat.type}</h3>
+                    <div class="grid grid-cols-2 gap-4 my-2"><div class="text-center p-2 bg-green-100 rounded"><span class="block text-2xl font-bold text-green-700">${cat.unsoldCount}</span><span class="text-sm">Unsold</span></div><div class="text-center p-2 bg-red-100 rounded"><span class="block text-2xl font-bold text-red-700">${cat.soldCount}</span><span class="text-sm">Sold</span></div></div>
+                    <div class="flex flex-wrap gap-2"><button class="btn btn-primary text-xs" onclick="window.copyUnsoldMails('${cat.stockKey}')">Copy Unsold</button><button class="btn btn-danger text-xs" onclick="window.deleteMailsByStatus('${cat.stockKey}', false, ${cat.unsoldCount})">Delete Unsold</button><button class="btn bg-gray-700 text-white text-xs" onclick="window.deleteMailsByStatus('${cat.stockKey}', true, ${cat.soldCount})">Delete Sold</button></div>
+                </div>`).join('');
+        }
+
+        window.copyUnsoldMails = async (stockKey) => {
+            const q = query(collection(db, stockKey), where("isSold", "==", false));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) return showAlert("No unsold mails.");
+            const mailData = snapshot.docs.map(doc => [doc.data().email, doc.data().password, doc.data().refresh_token, doc.data().client_id].filter(Boolean).join('/'));
+            await navigator.clipboard.writeText(mailData.join('\n'));
+            showAlert(`Copied ${snapshot.size} unsold mails.`);
+        }
+        
+        window.deleteMailsByStatus = (stockKey, isSold, count) => {
+            if (count === 0) return;
+            showConfirm(`!!! DANGER !!!\nDelete all ${count} ${isSold ? "SOLD" : "UNSOLD"} mails from ${stockKey}?`, async () => {
+                const q = query(collection(db, stockKey), where("isSold", "==", isSold), limit(400));
+                let snapshot, deletedCount = 0;
+                do {
+                    snapshot = await getDocs(q); const batch = writeBatch(db);
+                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit(); deletedCount += snapshot.size;
+                } while (!snapshot.empty);
+                showAlert(`Deleted ${deletedCount} mails.`); loadBulkToolsPage();
+            });
+        }
+        
+        // --- Notifications & Content Management ---
+        async function handleBroadcastNotification() { const title = document.getElementById('broadcast-title').value; const message = document.getElementById('broadcast-message').value; if (!title || !message) return; showConfirm("Send to ALL users?", async () => { await addDoc(collection(db, 'notifications'), { title, message, createdAt: serverTimestamp(), recipientId: null }); showAlert("Broadcast sent!"); }); }
+        async function handleDirectNotification() { const userId = document.getElementById('direct-user-id').value; const title = document.getElementById('direct-title').value; const message = document.getElementById('direct-message').value; if (!userId || !title || !message) return; await addDoc(collection(db, 'notifications'), { title, message, recipientId: userId, createdAt: serverTimestamp() }); showAlert(`Direct notification sent.`); }
+        
+        async function loadUpdates() {
+            const tableBody = document.getElementById('updates-table-body');
+            activeListeners['updates'] = onSnapshot(query(collection(db, "updates"), orderBy("createdAt", "desc")), (snapshot) => {
+                if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="3" class="text-center">No updates.</td></tr>`; return; }
+                tableBody.innerHTML = snapshot.docs.map(doc => {
+                    const u = {id: doc.id, ...doc.data()}; const updateDataString = JSON.stringify(u).replace(/"/g, "'");
+                    return `<tr><td>${u.title}</td><td>${u.createdAt?.toDate().toLocaleDateString() || 'N/A'}</td><td class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editUpdate(${updateDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteUpdate('${u.id}')">Delete</button></td></tr>`;
+                }).join('');
+            });
+        }
+        async function handleUpdateSubmit(e) { e.preventDefault(); const id = document.getElementById('update-id').value; const data = { title: document.getElementById('update-title').value, content: document.getElementById('update-content').value, imageUrl: document.getElementById('update-imageUrl').value, }; if(id) await updateDoc(doc(db, "updates", id), data); else await addDoc(collection(db, "updates"), { ...data, createdAt: serverTimestamp() }); showAlert("Update saved!"); resetUpdateForm(); }
+        window.editUpdate = (u) => { document.getElementById('update-id').value = u.id; document.getElementById('update-title').value = u.title; document.getElementById('update-content').value = u.content; document.getElementById('update-imageUrl').value = u.imageUrl; document.getElementById('update-form-title').textContent = "Edit Update"; document.getElementById('update-cancel-btn').classList.remove('hidden'); }
+        function resetUpdateForm() { document.getElementById('update-form').reset(); document.getElementById('update-id').value = ''; document.getElementById('update-form-title').textContent = "Add New Update"; document.getElementById('update-cancel-btn').classList.add('hidden'); }
+        window.deleteUpdate = (id) => showConfirm("Delete this update?", async () => await deleteDoc(doc(db, "updates", id)));
+
+        async function loadTutorials() {
+            const listContainer = document.getElementById('tutorials-list');
+            activeListeners['tutorials'] = onSnapshot(query(collection(db, "tutorials"), orderBy("order")), (snapshot) => {
+                if(snapshot.empty) { listContainer.innerHTML = `<p class="text-gray-500">No tutorials.</p>`; return; }
+                listContainer.innerHTML = snapshot.docs.map(doc => {
+                    const t = {id: doc.id, ...doc.data()}; const tutDataString = JSON.stringify(t).replace(/"/g, "'");
+                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${t.title}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editTutorial(${tutDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteTutorial('${t.id}')">Delete</button></div></div>`;
+                }).join('');
+            });
+        }
+        async function handleTutorialFormSubmit(e) { e.preventDefault(); const id = document.getElementById('tutorial-id').value; const data = { title: document.getElementById('tutorial-title').value, youtubeWatchUrl: document.getElementById('tutorial-youtubeWatchUrl').value, bannerImageUrl: document.getElementById('tutorial-bannerImageUrl').value, order: parseInt(document.getElementById('tutorial-order').value) || 0 }; if(id) await updateDoc(doc(db, "tutorials", id), data); else await addDoc(collection(db, "tutorials"), data); showAlert("Tutorial saved!"); resetTutorialForm(); }
+        window.editTutorial = (t) => { document.getElementById('tutorial-id').value = t.id; document.getElementById('tutorial-title').value = t.title; document.getElementById('tutorial-youtubeWatchUrl').value = t.youtubeWatchUrl; document.getElementById('tutorial-bannerImageUrl').value = t.bannerImageUrl || ''; document.getElementById('tutorial-order').value = t.order; document.getElementById('tutorial-form-title').textContent = "Edit Tutorial"; document.getElementById('tutorial-cancel-btn').classList.remove('hidden'); }
+        function resetTutorialForm() { document.getElementById('tutorial-form').reset(); document.getElementById('tutorial-id').value = ''; document.getElementById('tutorial-form-title').textContent = "Create Tutorial"; document.getElementById('tutorial-cancel-btn').classList.add('hidden'); }
+        window.deleteTutorial = (id) => showConfirm("Delete this tutorial?", async () => await deleteDoc(doc(db, "tutorials", id)));
+        
+        async function loadAds() {
+            const listContainer = document.getElementById('ads-list');
+            activeListeners['ads'] = onSnapshot(query(collection(db, "ads"), orderBy("order")), (snapshot) => {
+                if(snapshot.empty) { listContainer.innerHTML = `<p class="text-gray-500">No ads.</p>`; return; }
+                listContainer.innerHTML = snapshot.docs.map(doc => {
+                    const ad = {id: doc.id, ...doc.data()}; const adDataString = JSON.stringify(ad).replace(/"/g, "'");
+                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${ad.title}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editAd(${adDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteAd('${ad.id}')">Delete</button></div></div>`;
+                }).join('');
+            });
+        }
+        async function handleAdFormSubmit(e) { e.preventDefault(); const id = document.getElementById('ad-id').value; const data = { title: document.getElementById('ad-title').value, description: document.getElementById('ad-description').value, linkUrl: document.getElementById('ad-linkUrl').value, imageUrl: document.getElementById('ad-imageUrl').value, order: parseInt(document.getElementById('ad-order').value) || 0 }; if(id) await updateDoc(doc(db, "ads", id), data); else await addDoc(collection(db, "ads"), data); showAlert("Ad saved!"); resetAdForm(); }
+        window.editAd = (ad) => { document.getElementById('ad-id').value = ad.id; document.getElementById('ad-title').value = ad.title; document.getElementById('ad-description').value = ad.description || ''; document.getElementById('ad-linkUrl').value = ad.linkUrl; document.getElementById('ad-imageUrl').value = ad.imageUrl || ''; document.getElementById('ad-order').value = ad.order; document.getElementById('ad-form-title').textContent = "Edit Ad"; document.getElementById('ad-cancel-btn').classList.remove('hidden'); }
+        function resetAdForm() { document.getElementById('ad-form').reset(); document.getElementById('ad-id').value = ''; document.getElementById('ad-form-title').textContent = "Create New Ad"; document.getElementById('ad-cancel-btn').classList.add('hidden'); }
+        window.deleteAd = (id) => showConfirm("Delete this ad?", async () => await deleteDoc(doc(db, "ads", id)));
+        
+        // --- User Reviews ---
+        function loadUserReviews() {
+            const tableBody = document.getElementById('reviews-table-body');
+            activeListeners['reviews'] = onSnapshot(query(collection(db, "reviews"), orderBy("createdAt", "desc")), (snapshot) => {
+                if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No reviews.</td></tr>`; return; }
+                tableBody.innerHTML = snapshot.docs.map(doc => {
+                    const r = {id: doc.id, ...doc.data()};
+                    return `<tr><td>${r.name}</td><td>${'⭐'.repeat(r.rating)}</td><td>${r.reviewText}</td><td>${r.createdAt?.toDate().toLocaleDateString()}</td><td><button class="btn btn-danger text-xs" onclick="window.deleteReview('${r.id}')">Delete</button></td></tr>`;
+                }).join('');
+            });
+        }
+        async function handleAddReview(e) { e.preventDefault(); const data = { name: document.getElementById('review-name').value, rating: parseInt(document.getElementById('review-rating').value), reviewText: document.getElementById('review-text').value, imageUrl: document.getElementById('review-imageUrl').value, createdAt: serverTimestamp() }; await addDoc(collection(db, "reviews"), data); showAlert("Review added!"); document.getElementById('review-form').reset(); }
+        window.deleteReview = (id) => showConfirm("Delete review?", async () => await deleteDoc(doc(db, "reviews", id)));
+        
+        // --- Settings & Support Links ---
+        async function loadSettings() {
+            await fetchAppConfig();
+            document.getElementById('setting-min-deposit').value = appConfig.minDeposit || '';
+            document.getElementById('setting-business-discount').value = appConfig.businessDiscountPercent || '';
+            document.getElementById('setting-business-min-balance').value = appConfig.businessModeMinBalance || '';
+            document.getElementById('setting-business-daily-req').value = appConfig.businessModeDailyReq || '';
+            document.getElementById('setting-business-penalty').value = appConfig.businessModePenalty || '';
+            
+            const mailTypesContainer = document.getElementById('mail-types-container');
+            mailTypesContainer.innerHTML = '';
+            (appConfig.mails || []).forEach((mail) => addMailTypeToUI(mail));
+            lucide.createIcons();
+        }
+
+        function addMailTypeToUI(mail = {}) {
+            const container = document.getElementById('mail-types-container');
+            const card = document.createElement('div');
+            card.className = 'p-4 border-2 border-dashed rounded-lg bg-gray-50 mail-type-card';
+            card.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <input type="text" placeholder="Type (e.g., Google)" class="p-2 border rounded" data-field="type" value="${mail.type || ''}" required>
+                    <input type="number" step="0.01" placeholder="Price (BDT)" class="p-2 border rounded" data-field="priceBdt" value="${mail.priceBdt || ''}" required>
+                    <input type="text" placeholder="Stock Key (e.g., google_mails)" class="p-2 border rounded" data-field="stockKey" value="${mail.stockKey || ''}" required>
+                    <input type="url" placeholder="Logo URL" class="p-2 border rounded" data-field="logoUrl" value="${mail.logoUrl || ''}" required>
+                    <input type="url" placeholder="API Link (Optional)" class="p-2 border rounded" data-field="apiLink" value="${mail.apiLink || ''}">
+                    <select class="p-2 border rounded" data-field="category">
+                        <option value="login" ${!mail.category || mail.category === 'login' ? 'selected' : ''}>Login Mail</option>
+                        <option value="otp" ${mail.category === 'otp' ? 'selected' : ''}>OTP Mail</option>
+                        <option value="social" ${mail.category === 'social' ? 'selected' : ''}>Social Media</option>
+                    </select>
+                    <input type="number" placeholder="Expiration (Hours)" class="p-2 border rounded" data-field="expirationHours" value="${mail.expirationHours || ''}">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <textarea placeholder="Details/Description (for modal)" class="p-2 border rounded w-full" data-field="details" rows="4">${mail.details || ''}</textarea>
+                    <textarea placeholder="Feature List (one per line)" class="p-2 border rounded w-full" data-field="featureList" rows="4">${(mail.featureList || []).join('\n')}</textarea>
+                </div>
+                <button class="btn btn-danger mt-4 text-xs" onclick="this.parentElement.remove()">Remove</button>`;
+            container.appendChild(card);
+        }
+
+        async function saveAllSettings() {
+            showConfirm("Are you sure you want to save all settings? This will overwrite the current configuration.", async () => {
+                const newConfig = {
+                    minDeposit: parseFloat(document.getElementById('setting-min-deposit').value) || 50,
+                    businessDiscountPercent: parseFloat(document.getElementById('setting-business-discount').value) || 0,
+                    businessModeMinBalance: parseFloat(document.getElementById('setting-business-min-balance').value) || 80,
+                    businessModeDailyReq: parseFloat(document.getElementById('setting-business-daily-req').value) || 20,
+                    businessModePenalty: parseFloat(document.getElementById('setting-business-penalty').value) || 5,
+                    mails: []
+                };
+
+                document.querySelectorAll('.mail-type-card').forEach(card => {
+                    const mail = {};
+                    card.querySelectorAll('[data-field]').forEach(input => {
+                        const field = input.dataset.field; let value = input.value.trim();
+                        if (field === 'priceBdt') value = parseFloat(value) || 0;
+                        else if (field === 'expirationHours') value = value ? parseInt(value) : null;
+                        else if (field === 'featureList') value = value.split('\n').map(l => l.trim()).filter(Boolean);
+                        mail[field] = value;
+                    });
+                    if (mail.type && mail.stockKey) newConfig.mails.push(mail);
+                });
+                await setDoc(doc(db, "config", "main"), newConfig);
+                showAlert("All settings saved successfully!");
+            });
+        }
+        
+        async function loadSupportLinks() {
+            const listContainer = document.getElementById('support-links-list');
+            activeListeners['support'] = onSnapshot(query(collection(db, "support_channels"), orderBy("order")), (snapshot) => {
+                if (snapshot.empty) { listContainer.innerHTML = '<p class="text-gray-500">No links.</p>'; return; }
+                listContainer.innerHTML = snapshot.docs.map(docSnap => {
+                    const link = { id: docSnap.id, ...docSnap.data() }; const linkDataString = JSON.stringify(link).replace(/"/g, "'");
+                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${link.name}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editSupportLink(${linkDataString})">Edit</button><button class="btn text-xs btn-danger" onclick="window.deleteSupportLink('${link.id}')">Delete</button></div></div>`;
+                }).join('');
+            });
+        }
+        async function handleSupportFormSubmit(e) { e.preventDefault(); const id = document.getElementById('support-id').value; const data = { name: document.getElementById('support-name').value, iconUrl: document.getElementById('support-iconUrl').value, link: document.getElementById('support-link').value, order: parseInt(document.getElementById('support-order').value) || 0, isActive: document.getElementById('support-isActive').checked }; if (id) await updateDoc(doc(db, "support_channels", id), data); else await addDoc(collection(db, "support_channels"), data); showAlert("Support link saved!"); resetSupportForm(); }
+        function resetSupportForm() { document.getElementById('support-form').reset(); document.getElementById('support-id').value = ''; document.getElementById('support-form-title').textContent = "Add New Support Link"; document.getElementById('support-cancel-btn').classList.add('hidden'); }
+        window.editSupportLink = (link) => { document.getElementById('support-id').value = link.id; document.getElementById('support-name').value = link.name; document.getElementById('support-iconUrl').value = link.iconUrl; document.getElementById('support-link').value = link.link; document.getElementById('support-order').value = link.order; document.getElementById('support-isActive').checked = link.isActive; document.getElementById('support-form-title').textContent = "Edit Support Link"; document.getElementById('support-cancel-btn').classList.remove('hidden'); };
+        window.deleteSupportLink = (id) => showConfirm("Delete link?", async () => await deleteDoc(doc(db, "support_channels", id)));
+        
+        // --- Utility Functions ---
+        function showAlert(message) { document.getElementById('alert-message').textContent = message; document.getElementById('custom-alert').classList.remove('hidden'); }
+        function showConfirm(message, onConfirm) {
+            const confirmModal = document.getElementById('custom-confirm');
+            document.getElementById('confirm-message').textContent = message;
+            confirmModal.classList.remove('hidden');
+            const okBtn = document.getElementById('confirm-ok-btn');
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+            const cleanup = () => { confirmModal.classList.add('hidden'); okBtn.removeEventListener('click', okListener); cancelBtn.removeEventListener('click', cancelListener); };
+            const okListener = () => { onConfirm(); cleanup(); };
+            const cancelListener = () => cleanup();
+            okBtn.addEventListener('click', okListener, { once: true });
+            cancelBtn.addEventListener('click', cancelListener, { once: true });
+        }
+        
+        // --- Make functions globally accessible for onclick handlers ---
+        Object.assign(window, { toggleBlockUser, openBalanceModal, handleDeposit, handleApproveRequest, handleRejectRequest, deleteSingleFoundMail, copyUnsoldMails, deleteMailsByStatus, editUpdate, deleteUpdate, editTutorial, deleteTutorial, editAd, deleteAd, deleteReview, editSupportLink, deleteSupportLink });
+    </script>
+</body>
+</html>
