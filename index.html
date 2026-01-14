@@ -36,7 +36,7 @@
     <div id="admin-login-view" class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
             <div class="text-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
             </div>
@@ -343,6 +343,7 @@
                     </div>
                 </div>
 
+                <!-- =========== UPDATED SETTINGS PAGE =========== -->
                 <div id="settings-page" class="page">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">App Settings</h1>
                     <div class="space-y-8">
@@ -350,14 +351,15 @@
                         <!-- NEW: General Settings Card -->
                         <div class="stat-card p-6">
                              <h2 class="text-xl font-bold mb-4">Business & Deposit Rules</h2>
-                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <p class="text-sm text-gray-500 mb-4">এখানে সেট করা নিয়মগুলো ইউজার অ্যাপে সরাসরি প্রভাব ফেলবে।</p>
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Minimum Deposit Amount</label>
                                     <input type="number" id="setting-min-deposit" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 50">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Business Mode Discount (%)</label>
-                                    <input type="number" id="setting-business-discount" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 1 for 1%">
+                                    <input type="number" id="setting-business-discount" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 5 for 5%">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Business Mode Min Balance</label>
@@ -513,10 +515,12 @@
                 const configRef = doc(db, "config", "main");
                 const docSnap = await getDoc(configRef);
                 const defaults = {
-                    mails: [], minDeposit: 50, businessDiscountPercent: 1,
-                    businessModeMinBalance: 80, businessModeDailyReq: 20, businessModePenalty: 5
+                    mails: [], minDeposit: 50, businessDiscountPercent: 5,
+                    businessMode: { requiredBalance: 80, dailyPurchaseTarget: 20, penalty: 5 }
                 };
                 appConfig = docSnap.exists() ? { ...defaults, ...docSnap.data() } : defaults;
+                // Ensure nested businessMode object exists for easier access
+                if (!appConfig.businessMode) appConfig.businessMode = defaults.businessMode;
                 return appConfig;
             } catch (error) {
                 console.error("Error fetching app config:", error);
@@ -1016,9 +1020,9 @@
             await fetchAppConfig();
             document.getElementById('setting-min-deposit').value = appConfig.minDeposit || '';
             document.getElementById('setting-business-discount').value = appConfig.businessDiscountPercent || '';
-            document.getElementById('setting-business-min-balance').value = appConfig.businessModeMinBalance || '';
-            document.getElementById('setting-business-daily-req').value = appConfig.businessModeDailyReq || '';
-            document.getElementById('setting-business-penalty').value = appConfig.businessModePenalty || '';
+            document.getElementById('setting-business-min-balance').value = appConfig.businessMode?.requiredBalance || '';
+            document.getElementById('setting-business-daily-req').value = appConfig.businessMode?.dailyPurchaseTarget || '';
+            document.getElementById('setting-business-penalty').value = appConfig.businessMode?.penalty || '';
             
             const mailTypesContainer = document.getElementById('mail-types-container');
             mailTypesContainer.innerHTML = '';
@@ -1057,9 +1061,11 @@
                 const newConfig = {
                     minDeposit: parseFloat(document.getElementById('setting-min-deposit').value) || 50,
                     businessDiscountPercent: parseFloat(document.getElementById('setting-business-discount').value) || 0,
-                    businessModeMinBalance: parseFloat(document.getElementById('setting-business-min-balance').value) || 80,
-                    businessModeDailyReq: parseFloat(document.getElementById('setting-business-daily-req').value) || 20,
-                    businessModePenalty: parseFloat(document.getElementById('setting-business-penalty').value) || 5,
+                    businessMode: {
+                        requiredBalance: parseFloat(document.getElementById('setting-business-min-balance').value) || 80,
+                        dailyPurchaseTarget: parseFloat(document.getElementById('setting-business-daily-req').value) || 20,
+                        penalty: parseFloat(document.getElementById('setting-business-penalty').value) || 5
+                    },
                     mails: []
                 };
 
