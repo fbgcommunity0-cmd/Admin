@@ -61,11 +61,6 @@
                     <a href="#" class="nav-link block py-3 px-4" data-page="stock-page"><i data-lucide="package-plus" class="inline-block w-5 h-5 mr-2"></i>Add Stock</a>
                     <a href="#" class="nav-link block py-3 px-4" data-page="manage-mails-page"><i data-lucide="search" class="inline-block w-5 h-5 mr-2"></i>Search Mails</a>
                     <a href="#" class="nav-link block py-3 px-4" data-page="bulk-tools-page"><i data-lucide="database-zap" class="inline-block w-5 h-5 mr-2"></i>Bulk Mail Tools</a>
-                    <a href="#" class="nav-link block py-3 px-4" data-page="updates-page"><i data-lucide="megaphone" class="inline-block w-5 h-5 mr-2"></i>Manage Updates</a>
-                    <a href="#" class="nav-link block py-3 px-4" data-page="tutorials-page"><i data-lucide="video" class="inline-block w-5 h-5 mr-2"></i>Manage Tutorials</a>
-                    <a href="#" class="nav-link block py-3 px-4" data-page="ads-page"><i data-lucide="layout-list" class="inline-block w-5 h-5 mr-2"></i>Manage Ads</a>
-                    <a href="#" class="nav-link block py-3 px-4" data-page="reviews-page"><i data-lucide="star" class="inline-block w-5 h-5 mr-2"></i>User Reviews</a>
-                    <a href="#" class="nav-link block py-3 px-4" data-page="support-page"><i data-lucide="life-buoy" class="inline-block w-5 h-5 mr-2"></i>Support Links</a>
                     <a href="#" class="nav-link block py-3 px-4" data-page="settings-page"><i data-lucide="settings" class="inline-block w-5 h-5 mr-2"></i>App Settings</a>
                     <a href="#" id="admin-logout-btn" class="block py-3 px-4 mt-8 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="log-out" class="inline-block w-5 h-5 mr-2"></i>Logout</a>
                 </nav>
@@ -100,7 +95,7 @@
                     <div class="mb-4"><input type="text" id="user-search" class="w-full max-w-sm px-4 py-2 border rounded-lg" placeholder="Search by name or User ID..."></div>
                     <div class="bg-white shadow-md rounded-lg overflow-x-auto">
                         <table class="min-w-full">
-                            <thead><tr><th>Name</th><th>User ID</th><th>Balance</th><th>Mode</th><th>Status</th><th>Actions</th></tr></thead>
+                            <thead><tr><th>Name</th><th>User ID</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead>
                             <tbody id="users-table-body"></tbody>
                         </table>
                     </div>
@@ -203,175 +198,16 @@
                     </div>
                 </div>
 
-                <div id="updates-page" class="page">
-                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Updates</h1>
-                     <div class="stat-card p-6">
-                        <h2 class="text-xl font-bold mb-4" id="update-form-title">Add New Update</h2>
-                        <form id="update-form" class="space-y-4">
-                            <input type="hidden" id="update-id">
-                            <div><label class="block font-semibold">Title</label><input type="text" id="update-title" class="w-full px-3 py-2 border rounded" required></div>
-                            <div><label class="block font-semibold">Content / Message</label><textarea id="update-content" rows="4" class="w-full px-3 py-2 border rounded"></textarea></div>
-                            <div><label class="block font-semibold">Image URL</label><input type="text" id="update-imageUrl" class="w-full px-3 py-2 border rounded" required></div>
-                            <div class="flex space-x-2">
-                                <button type="submit" id="update-submit-btn" class="w-full btn btn-primary">Post Update</button>
-                                <button type="button" id="update-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="bg-white shadow-md rounded-lg overflow-x-auto mt-8">
-                        <h2 class="text-xl font-bold p-4">Current Updates</h2>
-                        <table>
-                            <thead><tr><th>Title</th><th>Posted On</th><th>Actions</th></tr></thead>
-                            <tbody id="updates-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <div id="tutorials-page" class="page">
-                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Tutorials</h1>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4" id="tutorial-form-title">Create New Tutorial</h2>
-                                <form id="tutorial-form" class="space-y-4">
-                                    <input type="hidden" id="tutorial-id">
-                                    <div><label class="block font-semibold">Title</label><input type="text" id="tutorial-title" class="w-full px-3 py-2 border rounded" required></div>
-                                    <div><label class="block font-semibold">YouTube Watch URL</label><input type="url" id="tutorial-youtubeWatchUrl" class="w-full px-3 py-2 border rounded" placeholder="e.g., https://www.youtube.com/watch?v=VIDEO_ID"></div>
-                                    <div><label class="block font-semibold">Banner Image URL (Optional)</label><input type="url" id="tutorial-bannerImageUrl" class="w-full px-3 py-2 border rounded" placeholder="Link to a custom thumbnail image"></div>
-                                    <div><label class="block font-semibold">Order (for display)</label><input type="number" id="tutorial-order" class="w-full px-3 py-2 border rounded" value="0"></div>
-                                    <div class="flex space-x-2">
-                                        <button type="submit" id="tutorial-submit-btn" class="w-full btn btn-primary">Create Tutorial</button>
-                                        <button type="button" id="tutorial-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-2">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4">Current Tutorials</h2>
-                                <div id="tutorials-list" class="space-y-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="ads-page" class="page">
-                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Ads</h1>
-                    <p class="text-gray-600 mb-6">এই বিজ্ঞাপনগুলি আপনার অ্যাপের "Account" -> "বিজ্ঞাপন" ট্যাবে দেখানো হবে।</p>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4" id="ad-form-title">Create New Ad</h2>
-                                <form id="ad-form" class="space-y-4">
-                                    <input type="hidden" id="ad-id">
-                                    <div><label class="block font-semibold">Title</label><input type="text" id="ad-title" class="w-full px-3 py-2 border rounded" required></div>
-                                    <div><label class="block font-semibold">Description</label><textarea id="ad-description" rows="3" class="w-full px-3 py-2 border rounded"></textarea></div>
-                                    <div><label class="block font-semibold">"GO!" Link URL</label><input type="url" id="ad-linkUrl" class="w-full px-3 py-2 border rounded" placeholder="https://..." required></div>
-                                    <div><label class="block font-semibold">Image URL (Optional)</label><input type="url" id="ad-imageUrl" class="w-full px-3 py-2 border rounded" placeholder="Link to a custom image"></div>
-                                    <div><label class="block font-semibold">Order (for display)</label><input type="number" id="ad-order" class="w-full px-3 py-2 border rounded" value="0"></div>
-                                    <div class="flex space-x-2">
-                                        <button type="submit" id="ad-submit-btn" class="w-full btn btn-primary">Create Ad</button>
-                                        <button type="button" id="ad-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-2">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4">Current Ads</h2>
-                                <div id="ads-list" class="space-y-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="reviews-page" class="page">
-                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage User Reviews</h1>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4">Add New Review</h2>
-                                <form id="review-form" class="space-y-4">
-                                    <div><label class="block font-semibold">User Name</label><input type="text" id="review-name" class="w-full px-3 py-2 border rounded" required></div>
-                                    <div><label class="block font-semibold">Rating (1-5)</label><input type="number" id="review-rating" class="w-full px-3 py-2 border rounded" min="1" max="5" required></div>
-                                    <div><label class="block font-semibold">Review Text</label><textarea id="review-text" rows="3" class="w-full px-3 py-2 border rounded" required></textarea></div>
-                                    <div><label class="block font-semibold">User Image URL</label><input type="url" id="review-imageUrl" class="w-full px-3 py-2 border rounded" placeholder="Leave blank for default initial"></div>
-                                    <button type="submit" class="w-full btn btn-primary">Add Review</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-2">
-                             <div class="bg-white shadow-md rounded-lg overflow-x-auto">
-                                <table class="min-w-full">
-                                    <thead><tr><th>User Name</th><th>Rating</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead>
-                                    <tbody id="reviews-table-body"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="support-page" class="page">
-                    <h1 class="text-3xl font-bold mb-6 text-gray-800">Manage Support Links</h1>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-1">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4" id="support-form-title">Add New Support Link</h2>
-                                <form id="support-form" class="space-y-4">
-                                    <input type="hidden" id="support-id">
-                                    <div><label class="block font-semibold">Channel Name</label><input type="text" id="support-name" class="w-full px-3 py-2 border rounded" placeholder="e.g., Telegram Support" required></div>
-                                    <div><label class="block font-semibold">Icon URL</label><input type="url" id="support-iconUrl" class="w-full px-3 py-2 border rounded" placeholder="https://i.postimg.cc/....png" required></div>
-                                    <div><label class="block font-semibold">Link URL</label><input type="url" id="support-link" class="w-full px-3 py-2 border rounded" placeholder="https://t.me/username" required></div>
-                                    <div><label class="block font-semibold">Order</label><input type="number" id="support-order" class="w-full px-3 py-2 border rounded" value="0"></div>
-                                    <div class="flex items-center space-x-2">
-                                        <input type="checkbox" id="support-isActive" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" checked>
-                                        <label for="support-isActive" class="font-semibold">Is Active</label>
-                                    </div>
-                                    <div class="flex space-x-2">
-                                        <button type="submit" id="support-submit-btn" class="w-full btn btn-primary">Save Link</button>
-                                        <button type="button" id="support-cancel-btn" class="w-full btn bg-gray-300 hidden">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="lg:col-span-2">
-                            <div class="stat-card p-6">
-                                <h2 class="text-xl font-bold mb-4">Current Support Links</h2>
-                                <div id="support-links-list" class="space-y-3"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- =========== UPDATED SETTINGS PAGE =========== -->
                 <div id="settings-page" class="page">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">App Settings</h1>
                     <div class="space-y-8">
-
-                        <!-- NEW: General Settings Card -->
                         <div class="stat-card p-6">
-                             <h2 class="text-xl font-bold mb-4">Business & Deposit Rules</h2>
+                             <h2 class="text-xl font-bold mb-4">Deposit Rules</h2>
                              <p class="text-sm text-gray-500 mb-4">এখানে সেট করা নিয়মগুলো ইউজার অ্যাপে সরাসরি প্রভাব ফেলবে।</p>
                              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Minimum Deposit Amount</label>
                                     <input type="number" id="setting-min-deposit" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 50">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Business Mode Discount (%)</label>
-                                    <input type="number" id="setting-business-discount" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 5 for 5%">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Business Mode Min Balance</label>
-                                    <input type="number" id="setting-business-min-balance" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 80">
-                                </div>
-                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Business Mode Daily Req.</label>
-                                    <input type="number" id="setting-business-daily-req" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 20">
-                                </div>
-                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Business Mode Penalty</label>
-                                    <input type="number" id="setting-business-penalty" class="mt-1 w-full p-2 border rounded-md" placeholder="e.g., 5">
                                 </div>
                              </div>
                         </div>
@@ -435,7 +271,8 @@
     <div id="custom-confirm" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] p-4"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-xl"><p id="confirm-message" class="mb-6 text-gray-800 whitespace-pre-wrap"></p><div class="flex justify-center space-x-4"><button id="confirm-cancel-btn" class="btn bg-gray-300 text-gray-800 px-6">Cancel</button><button id="confirm-ok-btn" class="btn btn-danger px-6">Confirm</button></div></div></div>
     
     <script type="module">
-        const firebaseConfig = {
+        // --- DUAL FIREBASE CONFIGURATION ---
+        const firebaseConfigUser = {
           apiKey: "AIzaSyClz7XBgYHuiF70711CSb6DzDULzN4Okc8",
           authDomain: "tech-mail-market.firebaseapp.com",
           databaseURL: "https://tech-mail-market-default-rtdb.firebaseio.com",
@@ -445,17 +282,29 @@
           appId: "1:28333491796:web:caa5daa598b72550830fc1"
         };
         
+        const firebaseConfigMail = {
+          apiKey: "AIzaSyBtNIF0NbUsriMB7ZNrwfl_0hEyP6BpH6s",
+          authDomain: "tmgbdsell.firebaseapp.com",
+          databaseURL: "https://tmgbdsell-default-rtdb.firebaseio.com",
+          projectId: "tmgbdsell",
+          storageBucket: "tmgbdsell.firebasestorage.app",
+          messagingSenderId: "711521693696",
+          appId: "1:711521693696:web:f765e256d178fc1c2428e5"
+        };
+        
         const ADMIN_UIDS = ["H8Nrwo2lCOXVBTqTsynmAeOJSY52"]; 
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDoc, setDoc, updateDoc, query, where, onSnapshot, addDoc, serverTimestamp, deleteDoc, writeBatch, getDocs, runTransaction, orderBy, limit, getCountFromServer, increment, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        const userApp = initializeApp(firebaseConfigUser, "userApp");
+        const mailApp = initializeApp(firebaseConfigMail, "mailApp");
 
-        // --- Global State ---
+        const auth = getAuth(userApp); 
+        const dbUser = getFirestore(userApp);
+        const dbMail = getFirestore(mailApp);
+
         const loginView = document.getElementById('admin-login-view');
         const dashboardView = document.getElementById('admin-dashboard');
         let appConfig = {};
@@ -463,7 +312,6 @@
         let allPurchases = [];
         let globalFoundMails = [];
         
-        // --- Initialization ---
         window.onload = () => {
             lucide.createIcons();
             setupEventListeners();
@@ -480,7 +328,6 @@
             });
         };
         
-        // --- Navigation & Page Loading ---
         function navigateTo(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId)?.classList.add('active');
@@ -499,12 +346,9 @@
                 'purchases-page': loadMailPurchases,
                 'stock-page': loadAddStockPage,
                 'bulk-tools-page': loadBulkToolsPage,
-                'updates-page': loadUpdates,
-                'tutorials-page': loadTutorials,
-                'ads-page': loadAds,
-                'reviews-page': loadUserReviews,
                 'settings-page': loadSettings,
-                'support-page': loadSupportLinks,
+                'manage-mails-page': () => {},
+                'notifications-page': () => {}
             };
             pageFunctions[pageId]?.();
             lucide.createIcons();
@@ -512,15 +356,10 @@
 
         async function fetchAppConfig() {
             try {
-                const configRef = doc(db, "config", "main");
+                const configRef = doc(dbMail, "config", "main");
                 const docSnap = await getDoc(configRef);
-                const defaults = {
-                    mails: [], minDeposit: 50, businessDiscountPercent: 5,
-                    businessMode: { requiredBalance: 80, dailyPurchaseTarget: 20, penalty: 5 }
-                };
+                const defaults = { mails: [], minDeposit: 50 };
                 appConfig = docSnap.exists() ? { ...defaults, ...docSnap.data() } : defaults;
-                // Ensure nested businessMode object exists for easier access
-                if (!appConfig.businessMode) appConfig.businessMode = defaults.businessMode;
                 return appConfig;
             } catch (error) {
                 console.error("Error fetching app config:", error);
@@ -529,7 +368,6 @@
             }
         }
 
-        // --- Event Listeners Setup ---
         function setupEventListeners() {
             document.getElementById('admin-login-btn').addEventListener('click', handleAdminLogin);
             document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
@@ -539,28 +377,18 @@
             });
             document.getElementById('send-broadcast-btn').addEventListener('click', handleBroadcastNotification);
             document.getElementById('send-direct-btn').addEventListener('click', handleDirectNotification);
-            document.getElementById('update-form').addEventListener('submit', handleUpdateSubmit);
-            document.getElementById('update-cancel-btn').addEventListener('click', resetUpdateForm);
             document.getElementById('save-all-settings-btn').addEventListener('click', saveAllSettings);
             document.getElementById('add-mail-type-btn').addEventListener('click', () => addMailTypeToUI());
             document.getElementById('add-mails-btn').addEventListener('click', handleAddMails);
             document.getElementById('balance-modal-cancel').addEventListener('click', () => document.getElementById('balance-modal').classList.add('hidden'));
             document.getElementById('balance-form').addEventListener('submit', handleBalanceUpdate);
-            document.getElementById('tutorial-form').addEventListener('submit', handleTutorialFormSubmit);
-            document.getElementById('tutorial-cancel-btn').addEventListener('click', resetTutorialForm);
-            document.getElementById('ad-form').addEventListener('submit', handleAdFormSubmit);
-            document.getElementById('ad-cancel-btn').addEventListener('click', resetAdForm);
-            document.getElementById('review-form').addEventListener('submit', handleAddReview);
             document.getElementById('alert-ok-btn').onclick = () => document.getElementById('custom-alert').classList.add('hidden');
-            document.getElementById('support-form').addEventListener('submit', handleSupportFormSubmit);
-            document.getElementById('support-cancel-btn').addEventListener('click', resetSupportForm);
             document.getElementById('purchase-search').addEventListener('input', (e) => renderPurchases(e.target.value));
             document.getElementById('global-mail-search-btn').addEventListener('click', handleGlobalMailSearch);
             document.getElementById('global-search-modal-close').addEventListener('click', () => document.getElementById('global-mail-search-modal').classList.add('hidden'));
             document.getElementById('global-search-delete-all-btn').addEventListener('click', handleDeleteAllFoundMails);
         }
 
-        // --- Authentication ---
         async function handleAdminLogin() {
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
@@ -574,14 +402,13 @@
             } catch (error) { showAlert("Login failed: " + error.message); }
         }
         
-        // --- Dashboard Logic ---
         async function loadDashboardData() {
             try {
                 const [ usersSnap, pendingDepositsSnap, pendingReplaceSnap, allPurchasesSnap ] = await Promise.all([
-                    getDocs(collection(db, "users")),
-                    getCountFromServer(query(collection(db, "deposits"), where("status", "==", "pending"))),
-                    getCountFromServer(query(collection(db, "replace_requests"), where("status", "==", "pending"))),
-                    getDocs(collection(db, "mail_purchases"))
+                    getDocs(collection(dbUser, "users")),
+                    getCountFromServer(query(collection(dbUser, "deposits"), where("status", "==", "pending"))),
+                    getCountFromServer(query(collection(dbMail, "replace_requests"), where("status", "==", "pending"))),
+                    getDocs(collection(dbMail, "mail_purchases"))
                 ]);
                 document.getElementById('total-users').textContent = usersSnap.size;
                 const totalUserBalance = usersSnap.docs.reduce((sum, doc) => sum + (doc.data().balance || 0), 0);
@@ -604,7 +431,7 @@
             if (!appConfig.mails || appConfig.mails.length === 0) { container.innerHTML = `<p>No mail types configured in settings.</p>`; return; }
             const stockPromises = appConfig.mails.map(async (mail) => {
                 try {
-                    const stockQuery = query(collection(db, mail.stockKey), where("isSold", "==", false));
+                    const stockQuery = query(collection(dbMail, mail.stockKey), where("isSold", "==", false));
                     const snapshot = await getCountFromServer(stockQuery);
                     return { name: mail.type, count: snapshot.data().count };
                 } catch (e) { return { name: mail.type, count: 'Error' }; }
@@ -617,11 +444,10 @@
                 </div>`).join('');
         }
         
-        // --- User Management ---
         async function loadUsers(searchTerm = '') {
             const tableBody = document.getElementById('users-table-body');
-            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
-            const q = query(collection(db, "users"), orderBy("balance", "desc"));
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
+            const q = query(collection(dbUser, "users"), orderBy("balance", "desc"));
             const snapshot = await getDocs(q);
             let users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             if (searchTerm) {
@@ -633,16 +459,14 @@
 
         function renderUsersTable(users) {
             const tableBody = document.getElementById('users-table-body');
-            if (users.length === 0) { tableBody.innerHTML = `<tr><td colspan="6" class="text-center">No users found.</td></tr>`; return; }
+            if (users.length === 0) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No users found.</td></tr>`; return; }
             tableBody.innerHTML = users.map(user => {
                 const isBlocked = user.isBlocked || false;
-                const profileMode = user.profileMode || 'personal';
                 const userDataString = JSON.stringify({ id: user.id, name: user.name || 'N/A', balance: user.balance || 0 }).replace(/"/g, "'");
                 
                 return `<tr>
                     <td>${user.name || 'N/A'}</td><td>${user.tgChatId}</td>
                     <td>৳${(user.balance || 0).toFixed(2)}</td>
-                    <td><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${profileMode === 'business' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}">${profileMode.charAt(0).toUpperCase() + profileMode.slice(1)}</span></td>
                     <td><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${isBlocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
                     <td class="space-x-2 whitespace-nowrap">
                         <button class="btn text-xs ${isBlocked ? 'btn-success' : 'btn-danger'}" onclick="window.toggleBlockUser('${user.id}', ${isBlocked})">${isBlocked ? 'Unblock' : 'Block'}</button>
@@ -654,7 +478,7 @@
         window.toggleBlockUser = (userId, isBlocked) => {
             const action = isBlocked ? 'unblock' : 'block';
             showConfirm(`Are you sure you want to ${action} this user?`, async () => {
-                await updateDoc(doc(db, "users", userId), { isBlocked: !isBlocked });
+                await updateDoc(doc(dbUser, "users", userId), { isBlocked: !isBlocked });
                 showAlert(`User successfully ${action}ed.`);
                 loadUsers(document.getElementById('user-search').value);
             });
@@ -674,9 +498,9 @@
             const action = document.getElementById('balance-action').value;
             const amount = parseFloat(document.getElementById('balance-amount').value);
             if (isNaN(amount) || amount < 0) return showAlert("Please enter a valid amount.");
-            const userRef = doc(db, "users", userId);
+            const userRef = doc(dbUser, "users", userId);
             try {
-                await runTransaction(db, async (transaction) => {
+                await runTransaction(dbUser, async (transaction) => {
                     const userDoc = await transaction.get(userRef);
                     if (!userDoc.exists()) throw new Error("User not found.");
                     const currentBalance = userDoc.data().balance || 0;
@@ -690,11 +514,10 @@
             } catch (error) { showAlert("Failed to update balance: " + error.message); }
         }
         
-        // --- Requests Management ---
         function loadDeposits() {
             const tableBody = document.getElementById('deposits-table-body');
             tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Loading...</td></tr>`;
-            const q = query(collection(db, "deposits"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
+            const q = query(collection(dbUser, "deposits"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
             activeListeners['deposits'] = onSnapshot(q, (snapshot) => {
                 if (snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="7" class="text-center">No pending deposits.</td></tr>`; return; }
                 tableBody.innerHTML = snapshot.docs.map(docSnap => {
@@ -713,14 +536,16 @@
         
         window.handleDeposit = (depositId, userId, amount, newStatus) => {
             showConfirm(`Are you sure you want to ${newStatus} this ৳${amount} deposit?`, async () => {
-                const depositRef = doc(db, "deposits", depositId);
-                const userRef = userId ? doc(db, "users", userId) : null;
+                const depositRef = doc(dbUser, "deposits", depositId);
+                const userRef = userId ? doc(dbUser, "users", userId) : null;
                 try {
-                    await runTransaction(db, async (transaction) => {
+                    await runTransaction(dbUser, async (transaction) => {
                         transaction.update(depositRef, { status: newStatus, processedAt: serverTimestamp() });
                         if (newStatus === 'approved' && userRef) { transaction.update(userRef, { balance: increment(amount) }); }
                     });
-                    await addDoc(collection(db, "notifications"), {
+                    
+                    // Sending notification to dbUser's notification collection
+                    await addDoc(collection(dbUser, "notifications"), {
                         recipientId: userId, title: `Deposit ${newStatus}`,
                         message: `Your deposit request of ৳${amount} has been ${newStatus}.`, createdAt: serverTimestamp()
                     });
@@ -732,7 +557,7 @@
         function loadReplaceRequests() {
             const tableBody = document.getElementById('replace-requests-table-body');
             tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
-            const q = query(collection(db, "replace_requests"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
+            const q = query(collection(dbMail, "replace_requests"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
             activeListeners['replace'] = onSnapshot(q, (snapshot) => {
                 if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No pending replace requests.</td></tr>`; return; }
                 tableBody.innerHTML = snapshot.docs.map(docSnap => {
@@ -754,13 +579,15 @@
         window.handleApproveRequest = (requestId, userId, cost, purchaseId, saleId, mailType) => {
             showConfirm(`Approve this request and refund ৳${cost} to user ${userId}?`, async () => {
                 try {
-                    await runTransaction(db, async (transaction) => {
-                        transaction.update(doc(db, "replace_requests", requestId), { status: 'approved', resolvedAt: serverTimestamp() });
-                        transaction.update(doc(db, "users", userId), { balance: increment(cost) });
-                        transaction.update(doc(db, "mail_purchases", purchaseId), { isRefunded: true });
-                    });
+                    const mailBatch = writeBatch(dbMail);
+                    mailBatch.update(doc(dbMail, "replace_requests", requestId), { status: 'approved', resolvedAt: serverTimestamp() });
+                    mailBatch.update(doc(dbMail, "mail_purchases", purchaseId), { isRefunded: true });
+                    await mailBatch.commit();
+                    
+                    await updateDoc(doc(dbUser, "users", userId), { balance: increment(cost) });
+
                     const mailTypeName = mailType.split(' (ID:')[0];
-                    await addDoc(collection(db, "notifications"), {
+                    await addDoc(collection(dbUser, "notifications"), {
                         recipientId: userId, title: "✅ Report Approved",
                         message: `Your report for ${mailTypeName} (ID: ${saleId}) has been approved. ৳${cost.toFixed(2)} has been refunded.`, createdAt: serverTimestamp()
                     });
@@ -771,9 +598,9 @@
 
         window.handleRejectRequest = (requestId, userId, saleId, mailType) => {
             showConfirm("Reject this request? A penalty might be applied to the user.", async () => {
-                const userRef = doc(db, "users", userId);
+                const userRef = doc(dbUser, "users", userId);
                 try {
-                    await runTransaction(db, async (transaction) => {
+                    await runTransaction(dbUser, async (transaction) => {
                         const userSnap = await transaction.get(userRef);
                         if (!userSnap.exists()) throw new Error("User not found");
                         const userData = userSnap.data();
@@ -786,10 +613,12 @@
                             updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 3600000); // 5 hours
                         }
                         transaction.update(userRef, updates);
-                        transaction.update(doc(db, "replace_requests", requestId), { status: 'rejected', resolvedAt: serverTimestamp() });
                     });
+
+                    await updateDoc(doc(dbMail, "replace_requests", requestId), { status: 'rejected', resolvedAt: serverTimestamp() });
+
                     const mailTypeName = mailType.split(' (ID:')[0];
-                    await addDoc(collection(db, "notifications"), {
+                    await addDoc(collection(dbUser, "notifications"), {
                         recipientId: userId, title: "❌ Report Rejected",
                         message: `Your report for ${mailTypeName} (ID: ${saleId}) has been rejected.`, createdAt: serverTimestamp()
                     });
@@ -798,13 +627,14 @@
             });
         };
 
-        // --- Content Management (Stock, Purchases, Mails etc.) ---
         async function loadMailPurchases() {
             const tableBody = document.getElementById('purchases-table-body');
             tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
-            const q = query(collection(db, "mail_purchases"), orderBy("purchasedAt", "desc"), limit(200));
             const usersMap = new Map();
-            const [purchasesSnap, usersSnap] = await Promise.all([getDocs(q), getDocs(collection(db, "users"))]);
+            const [purchasesSnap, usersSnap] = await Promise.all([
+                getDocs(query(collection(dbMail, "mail_purchases"), orderBy("purchasedAt", "desc"), limit(200))),
+                getDocs(collection(dbUser, "users"))
+            ]);
             usersSnap.forEach(doc => usersMap.set(doc.id, doc.data().name || doc.id));
             allPurchases = purchasesSnap.docs.map(docSnap => {
                 const p = docSnap.data();
@@ -848,12 +678,12 @@
             showConfirm(`Are you sure you want to add ${lines.length} mails to the '${stockKey}' stock?`, async () => {
                 let addedCount = 0; const batchSize = 400; 
                 for (let i = 0; i < lines.length; i += batchSize) {
-                    const batch = writeBatch(db);
+                    const batch = writeBatch(dbMail);
                     const chunk = lines.slice(i, i + batchSize);
                     chunk.forEach(line => {
                         const parts = line.trim().split('|');
                         if (parts.length >= 2) {
-                            batch.set(doc(collection(db, stockKey)), { 
+                            batch.set(doc(collection(dbMail, stockKey)), { 
                                 email: parts[0] || '', password: parts[1] || '', 
                                 refresh_token: parts[2] || '', client_id: parts[3] || '', 
                                 isSold: false, createdAt: serverTimestamp() 
@@ -867,7 +697,6 @@
             });
         }
         
-        // --- Global Mail Search & Bulk Tools ---
         async function handleGlobalMailSearch() {
             const email = document.getElementById('global-mail-search-input').value.trim();
             const resultsContainer = document.getElementById('global-mail-search-results-container');
@@ -878,7 +707,7 @@
             await fetchAppConfig(); globalFoundMails = [];
             const searchPromises = appConfig.mails.map(async (mailType) => {
                 try {
-                    const q = query(collection(db, mailType.stockKey), where("email", "==", email));
+                    const q = query(collection(dbMail, mailType.stockKey), where("email", "==", email));
                     const snapshot = await getDocs(q);
                     snapshot.forEach(doc => { globalFoundMails.push({ id: doc.id, stockKey: mailType.stockKey, type: mailType.type, ...doc.data() }); });
                 } catch (e) { console.error(`Error in ${mailType.stockKey}:`, e.message); }
@@ -897,13 +726,13 @@
             } else { resultsContainer.innerHTML = '<p class="text-yellow-600 font-semibold">No mail found.</p>'; }
         }
         
-        window.deleteSingleFoundMail = (stockKey, docId) => { showConfirm("Delete this specific mail?", async () => { await deleteDoc(doc(db, stockKey, docId)); showAlert("Mail deleted."); document.getElementById(`found-mail-${docId}`)?.remove(); }); };
+        window.deleteSingleFoundMail = (stockKey, docId) => { showConfirm("Delete this specific mail?", async () => { await deleteDoc(doc(dbMail, stockKey, docId)); showAlert("Mail deleted."); document.getElementById(`found-mail-${docId}`)?.remove(); }); };
         
         function handleDeleteAllFoundMails() {
             if (globalFoundMails.length === 0) return;
             showConfirm(`Delete all ${globalFoundMails.length} found instances?`, async () => {
-                const batch = writeBatch(db);
-                globalFoundMails.forEach(mail => batch.delete(doc(db, mail.stockKey, mail.id)));
+                const batch = writeBatch(dbMail);
+                globalFoundMails.forEach(mail => batch.delete(doc(dbMail, mail.stockKey, mail.id)));
                 await batch.commit();
                 showAlert(`Deleted all ${globalFoundMails.length} mails.`);
                 document.getElementById('global-mail-search-modal').classList.add('hidden');
@@ -916,8 +745,8 @@
             await fetchAppConfig();
             const categories = await Promise.all(appConfig.mails.map(async (mail) => {
                 const [unsoldSnap, soldSnap] = await Promise.all([
-                    getCountFromServer(query(collection(db, mail.stockKey), where("isSold", "==", false))),
-                    getCountFromServer(query(collection(db, mail.stockKey), where("isSold", "==", true)))
+                    getCountFromServer(query(collection(dbMail, mail.stockKey), where("isSold", "==", false))),
+                    getCountFromServer(query(collection(dbMail, mail.stockKey), where("isSold", "==", true)))
                 ]);
                 return { ...mail, unsoldCount: unsoldSnap.data().count, soldCount: soldSnap.data().count };
             }));
@@ -930,7 +759,7 @@
         }
 
         window.copyUnsoldMails = async (stockKey) => {
-            const q = query(collection(db, stockKey), where("isSold", "==", false));
+            const q = query(collection(dbMail, stockKey), where("isSold", "==", false));
             const snapshot = await getDocs(q);
             if (snapshot.empty) return showAlert("No unsold mails.");
             const mailData = snapshot.docs.map(doc => [doc.data().email, doc.data().password, doc.data().refresh_token, doc.data().client_id].filter(Boolean).join('|'));
@@ -941,10 +770,10 @@
         window.deleteMailsByStatus = (stockKey, isSold, count) => {
             if (count === 0) return;
             showConfirm(`!!! DANGER !!!\nDelete all ${count} ${isSold ? "SOLD" : "UNSOLD"} mails from ${stockKey}?`, async () => {
-                const q = query(collection(db, stockKey), where("isSold", "==", isSold), limit(400));
+                const q = query(collection(dbMail, stockKey), where("isSold", "==", isSold), limit(400));
                 let snapshot, deletedCount = 0;
                 do {
-                    snapshot = await getDocs(q); const batch = writeBatch(db);
+                    snapshot = await getDocs(q); const batch = writeBatch(dbMail);
                     snapshot.docs.forEach(doc => batch.delete(doc.ref));
                     await batch.commit(); deletedCount += snapshot.size;
                 } while (!snapshot.empty);
@@ -952,78 +781,12 @@
             });
         }
         
-        // --- Notifications & Content Management ---
-        async function handleBroadcastNotification() { const title = document.getElementById('broadcast-title').value; const message = document.getElementById('broadcast-message').value; if (!title || !message) return; showConfirm("Send to ALL users?", async () => { await addDoc(collection(db, 'notifications'), { title, message, createdAt: serverTimestamp(), recipientId: null }); showAlert("Broadcast sent!"); }); }
-        async function handleDirectNotification() { const userId = document.getElementById('direct-user-id').value; const title = document.getElementById('direct-title').value; const message = document.getElementById('direct-message').value; if (!userId || !title || !message) return; await addDoc(collection(db, 'notifications'), { title, message, recipientId: userId, createdAt: serverTimestamp() }); showAlert(`Direct notification sent.`); }
+        async function handleBroadcastNotification() { const title = document.getElementById('broadcast-title').value; const message = document.getElementById('broadcast-message').value; if (!title || !message) return; showConfirm("Send to ALL users?", async () => { await addDoc(collection(dbUser, 'notifications'), { title, message, createdAt: serverTimestamp(), recipientId: null }); showAlert("Broadcast sent!"); }); }
+        async function handleDirectNotification() { const userId = document.getElementById('direct-user-id').value; const title = document.getElementById('direct-title').value; const message = document.getElementById('direct-message').value; if (!userId || !title || !message) return; await addDoc(collection(dbUser, 'notifications'), { title, message, recipientId: userId, createdAt: serverTimestamp() }); showAlert(`Direct notification sent.`); }
         
-        async function loadUpdates() {
-            const tableBody = document.getElementById('updates-table-body');
-            activeListeners['updates'] = onSnapshot(query(collection(db, "updates"), orderBy("createdAt", "desc")), (snapshot) => {
-                if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="3" class="text-center">No updates.</td></tr>`; return; }
-                tableBody.innerHTML = snapshot.docs.map(doc => {
-                    const u = {id: doc.id, ...doc.data()}; const updateDataString = JSON.stringify(u).replace(/"/g, "'");
-                    return `<tr><td>${u.title}</td><td>${u.createdAt?.toDate().toLocaleDateString() || 'N/A'}</td><td class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editUpdate(${updateDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteUpdate('${u.id}')">Delete</button></td></tr>`;
-                }).join('');
-            });
-        }
-        async function handleUpdateSubmit(e) { e.preventDefault(); const id = document.getElementById('update-id').value; const data = { title: document.getElementById('update-title').value, content: document.getElementById('update-content').value, imageUrl: document.getElementById('update-imageUrl').value, }; if(id) await updateDoc(doc(db, "updates", id), data); else await addDoc(collection(db, "updates"), { ...data, createdAt: serverTimestamp() }); showAlert("Update saved!"); resetUpdateForm(); }
-        window.editUpdate = (u) => { document.getElementById('update-id').value = u.id; document.getElementById('update-title').value = u.title; document.getElementById('update-content').value = u.content; document.getElementById('update-imageUrl').value = u.imageUrl; document.getElementById('update-form-title').textContent = "Edit Update"; document.getElementById('update-cancel-btn').classList.remove('hidden'); }
-        function resetUpdateForm() { document.getElementById('update-form').reset(); document.getElementById('update-id').value = ''; document.getElementById('update-form-title').textContent = "Add New Update"; document.getElementById('update-cancel-btn').classList.add('hidden'); }
-        window.deleteUpdate = (id) => showConfirm("Delete this update?", async () => await deleteDoc(doc(db, "updates", id)));
-
-        async function loadTutorials() {
-            const listContainer = document.getElementById('tutorials-list');
-            activeListeners['tutorials'] = onSnapshot(query(collection(db, "tutorials"), orderBy("order")), (snapshot) => {
-                if(snapshot.empty) { listContainer.innerHTML = `<p class="text-gray-500">No tutorials.</p>`; return; }
-                listContainer.innerHTML = snapshot.docs.map(doc => {
-                    const t = {id: doc.id, ...doc.data()}; const tutDataString = JSON.stringify(t).replace(/"/g, "'");
-                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${t.title}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editTutorial(${tutDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteTutorial('${t.id}')">Delete</button></div></div>`;
-                }).join('');
-            });
-        }
-        async function handleTutorialFormSubmit(e) { e.preventDefault(); const id = document.getElementById('tutorial-id').value; const data = { title: document.getElementById('tutorial-title').value, youtubeWatchUrl: document.getElementById('tutorial-youtubeWatchUrl').value, bannerImageUrl: document.getElementById('tutorial-bannerImageUrl').value, order: parseInt(document.getElementById('tutorial-order').value) || 0 }; if(id) await updateDoc(doc(db, "tutorials", id), data); else await addDoc(collection(db, "tutorials"), data); showAlert("Tutorial saved!"); resetTutorialForm(); }
-        window.editTutorial = (t) => { document.getElementById('tutorial-id').value = t.id; document.getElementById('tutorial-title').value = t.title; document.getElementById('tutorial-youtubeWatchUrl').value = t.youtubeWatchUrl; document.getElementById('tutorial-bannerImageUrl').value = t.bannerImageUrl || ''; document.getElementById('tutorial-order').value = t.order; document.getElementById('tutorial-form-title').textContent = "Edit Tutorial"; document.getElementById('tutorial-cancel-btn').classList.remove('hidden'); }
-        function resetTutorialForm() { document.getElementById('tutorial-form').reset(); document.getElementById('tutorial-id').value = ''; document.getElementById('tutorial-form-title').textContent = "Create Tutorial"; document.getElementById('tutorial-cancel-btn').classList.add('hidden'); }
-        window.deleteTutorial = (id) => showConfirm("Delete this tutorial?", async () => await deleteDoc(doc(db, "tutorials", id)));
-        
-        async function loadAds() {
-            const listContainer = document.getElementById('ads-list');
-            activeListeners['ads'] = onSnapshot(query(collection(db, "ads"), orderBy("order")), (snapshot) => {
-                if(snapshot.empty) { listContainer.innerHTML = `<p class="text-gray-500">No ads.</p>`; return; }
-                listContainer.innerHTML = snapshot.docs.map(doc => {
-                    const ad = {id: doc.id, ...doc.data()}; const adDataString = JSON.stringify(ad).replace(/"/g, "'");
-                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${ad.title}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editAd(${adDataString})">Edit</button><button class="btn btn-danger text-xs" onclick="window.deleteAd('${ad.id}')">Delete</button></div></div>`;
-                }).join('');
-            });
-        }
-        async function handleAdFormSubmit(e) { e.preventDefault(); const id = document.getElementById('ad-id').value; const data = { title: document.getElementById('ad-title').value, description: document.getElementById('ad-description').value, linkUrl: document.getElementById('ad-linkUrl').value, imageUrl: document.getElementById('ad-imageUrl').value, order: parseInt(document.getElementById('ad-order').value) || 0 }; if(id) await updateDoc(doc(db, "ads", id), data); else await addDoc(collection(db, "ads"), data); showAlert("Ad saved!"); resetAdForm(); }
-        window.editAd = (ad) => { document.getElementById('ad-id').value = ad.id; document.getElementById('ad-title').value = ad.title; document.getElementById('ad-description').value = ad.description || ''; document.getElementById('ad-linkUrl').value = ad.linkUrl; document.getElementById('ad-imageUrl').value = ad.imageUrl || ''; document.getElementById('ad-order').value = ad.order; document.getElementById('ad-form-title').textContent = "Edit Ad"; document.getElementById('ad-cancel-btn').classList.remove('hidden'); }
-        function resetAdForm() { document.getElementById('ad-form').reset(); document.getElementById('ad-id').value = ''; document.getElementById('ad-form-title').textContent = "Create New Ad"; document.getElementById('ad-cancel-btn').classList.add('hidden'); }
-        window.deleteAd = (id) => showConfirm("Delete this ad?", async () => await deleteDoc(doc(db, "ads", id)));
-        
-        // --- User Reviews ---
-        function loadUserReviews() {
-            const tableBody = document.getElementById('reviews-table-body');
-            activeListeners['reviews'] = onSnapshot(query(collection(db, "reviews"), orderBy("createdAt", "desc")), (snapshot) => {
-                if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No reviews.</td></tr>`; return; }
-                tableBody.innerHTML = snapshot.docs.map(doc => {
-                    const r = {id: doc.id, ...doc.data()};
-                    return `<tr><td>${r.name}</td><td>${'⭐'.repeat(r.rating)}</td><td>${r.reviewText}</td><td>${r.createdAt?.toDate().toLocaleDateString()}</td><td><button class="btn btn-danger text-xs" onclick="window.deleteReview('${r.id}')">Delete</button></td></tr>`;
-                }).join('');
-            });
-        }
-        async function handleAddReview(e) { e.preventDefault(); const data = { name: document.getElementById('review-name').value, rating: parseInt(document.getElementById('review-rating').value), reviewText: document.getElementById('review-text').value, imageUrl: document.getElementById('review-imageUrl').value, createdAt: serverTimestamp() }; await addDoc(collection(db, "reviews"), data); showAlert("Review added!"); document.getElementById('review-form').reset(); }
-        window.deleteReview = (id) => showConfirm("Delete review?", async () => await deleteDoc(doc(db, "reviews", id)));
-        
-        // --- Settings & Support Links ---
         async function loadSettings() {
             await fetchAppConfig();
             document.getElementById('setting-min-deposit').value = appConfig.minDeposit || '';
-            document.getElementById('setting-business-discount').value = appConfig.businessDiscountPercent || '';
-            document.getElementById('setting-business-min-balance').value = appConfig.businessMode?.requiredBalance || '';
-            document.getElementById('setting-business-daily-req').value = appConfig.businessMode?.dailyPurchaseTarget || '';
-            document.getElementById('setting-business-penalty').value = appConfig.businessMode?.penalty || '';
-            
             const mailTypesContainer = document.getElementById('mail-types-container');
             mailTypesContainer.innerHTML = '';
             (appConfig.mails || []).forEach((mail) => addMailTypeToUI(mail));
@@ -1044,7 +807,6 @@
                     <select class="p-2 border rounded" data-field="category">
                         <option value="login" ${!mail.category || mail.category === 'login' ? 'selected' : ''}>Login Mail</option>
                         <option value="otp" ${mail.category === 'otp' ? 'selected' : ''}>OTP Mail</option>
-                        <option value="social" ${mail.category === 'social' ? 'selected' : ''}>Social Media</option>
                     </select>
                     <input type="number" placeholder="Expiration (Hours)" class="p-2 border rounded" data-field="expirationHours" value="${mail.expirationHours || ''}">
                 </div>
@@ -1060,12 +822,6 @@
             showConfirm("Are you sure you want to save all settings? This will overwrite the current configuration.", async () => {
                 const newConfig = {
                     minDeposit: parseFloat(document.getElementById('setting-min-deposit').value) || 50,
-                    businessDiscountPercent: parseFloat(document.getElementById('setting-business-discount').value) || 0,
-                    businessMode: {
-                        requiredBalance: parseFloat(document.getElementById('setting-business-min-balance').value) || 80,
-                        dailyPurchaseTarget: parseFloat(document.getElementById('setting-business-daily-req').value) || 20,
-                        penalty: parseFloat(document.getElementById('setting-business-penalty').value) || 5
-                    },
                     mails: []
                 };
 
@@ -1080,27 +836,11 @@
                     });
                     if (mail.type && mail.stockKey) newConfig.mails.push(mail);
                 });
-                await setDoc(doc(db, "config", "main"), newConfig);
+                await setDoc(doc(dbMail, "config", "main"), newConfig);
                 showAlert("All settings saved successfully!");
             });
         }
         
-        async function loadSupportLinks() {
-            const listContainer = document.getElementById('support-links-list');
-            activeListeners['support'] = onSnapshot(query(collection(db, "support_channels"), orderBy("order")), (snapshot) => {
-                if (snapshot.empty) { listContainer.innerHTML = '<p class="text-gray-500">No links.</p>'; return; }
-                listContainer.innerHTML = snapshot.docs.map(docSnap => {
-                    const link = { id: docSnap.id, ...docSnap.data() }; const linkDataString = JSON.stringify(link).replace(/"/g, "'");
-                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${link.name}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editSupportLink(${linkDataString})">Edit</button><button class="btn text-xs btn-danger" onclick="window.deleteSupportLink('${link.id}')">Delete</button></div></div>`;
-                }).join('');
-            });
-        }
-        async function handleSupportFormSubmit(e) { e.preventDefault(); const id = document.getElementById('support-id').value; const data = { name: document.getElementById('support-name').value, iconUrl: document.getElementById('support-iconUrl').value, link: document.getElementById('support-link').value, order: parseInt(document.getElementById('support-order').value) || 0, isActive: document.getElementById('support-isActive').checked }; if (id) await updateDoc(doc(db, "support_channels", id), data); else await addDoc(collection(db, "support_channels"), data); showAlert("Support link saved!"); resetSupportForm(); }
-        function resetSupportForm() { document.getElementById('support-form').reset(); document.getElementById('support-id').value = ''; document.getElementById('support-form-title').textContent = "Add New Support Link"; document.getElementById('support-cancel-btn').classList.add('hidden'); }
-        window.editSupportLink = (link) => { document.getElementById('support-id').value = link.id; document.getElementById('support-name').value = link.name; document.getElementById('support-iconUrl').value = link.iconUrl; document.getElementById('support-link').value = link.link; document.getElementById('support-order').value = link.order; document.getElementById('support-isActive').checked = link.isActive; document.getElementById('support-form-title').textContent = "Edit Support Link"; document.getElementById('support-cancel-btn').classList.remove('hidden'); };
-        window.deleteSupportLink = (id) => showConfirm("Delete link?", async () => await deleteDoc(doc(db, "support_channels", id)));
-        
-        // --- Utility Functions ---
         function showAlert(message) { document.getElementById('alert-message').textContent = message; document.getElementById('custom-alert').classList.remove('hidden'); }
         function showConfirm(message, onConfirm) {
             const confirmModal = document.getElementById('custom-confirm');
@@ -1115,8 +855,7 @@
             cancelBtn.addEventListener('click', cancelListener, { once: true });
         }
         
-        // --- Make functions globally accessible for onclick handlers ---
-        Object.assign(window, { toggleBlockUser, openBalanceModal, handleDeposit, handleApproveRequest, handleRejectRequest, deleteSingleFoundMail, copyUnsoldMails, deleteMailsByStatus, editUpdate, deleteUpdate, editTutorial, deleteTutorial, editAd, deleteAd, deleteReview, editSupportLink, deleteSupportLink });
+        Object.assign(window, { toggleBlockUser, openBalanceModal, handleDeposit, handleApproveRequest, handleRejectRequest, deleteSingleFoundMail, copyUnsoldMails, deleteMailsByStatus });
     </script>
 </body>
 </html>
