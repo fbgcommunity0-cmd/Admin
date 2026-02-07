@@ -74,16 +74,17 @@
             <main class="flex-1 p-8 overflow-y-auto bg-gray-100">
                 <div id="dashboard-page" class="page">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">পেন্ডিং অনুরোধ</h2>
                             <div class="mt-2 text-lg space-y-1">
                                 <p>ডিপোজিট: <span id="pending-deposits" class="font-bold text-yellow-600">0</span></p>
                                 <p>রিপ্লেস: <span id="pending-replace-requests" class="font-bold text-orange-600">0</span></p>
                             </div>
                         </div>
-                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">মোট ব্যবহারকারী</h2><p id="total-users" class="text-4xl font-bold mt-2 text-indigo-600">0</p></div>
-                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">ব্যবহারকারীদের মোট ব্যালেন্স</h2><p id="total-user-balance" class="text-4xl font-bold mt-2 text-purple-600">৳0</p></div>
-                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">সারা জীবনের মোট বিক্রি</h2><p id="total-sale-income" class="text-4xl font-bold mt-2 text-rose-600">৳0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">TOTAL USERS</h2><p id="total-users" class="text-4xl font-bold mt-2 text-indigo-600">0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">USERS' TOTAL BALANCE</h2><p id="total-user-balance" class="text-4xl font-bold mt-2 text-purple-600">৳0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">TODAY'S SALE</h2><p id="today-sales-stat" class="text-4xl font-bold mt-2 text-green-600">৳0</p></div>
+                        <div class="stat-card p-6"><h2 class="text-gray-500 text-lg">TOTAL SALE</h2><p id="total-sales-stat" class="text-4xl font-bold mt-2 text-rose-600">৳0</p></div>
                     </div>
                     <div class="grid grid-cols-1 gap-8 mt-8">
                         <div class="stat-card p-6">
@@ -182,13 +183,17 @@
                 <div id="manage-mails-page" class="page">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">Search Individual Mails</h1>
                     <div class="stat-card p-6">
-                        <p class="text-gray-600 mb-4">যেকোনো মেইল খুঁজে বের করতে এবং মুছে ফেলতে এখানে ইমেল আইডি দিয়ে সার্চ করুন। সিস্টেমটি সমস্ত উপলব্ধ স্টক থেকে মেইলটি খুঁজে বের করবে।</p>
+                        <p class="text-gray-600 mb-4">যেকোনো মেইল স্টকে বা বিক্রির ইতিহাসে খুঁজতে এখানে ইমেল আইডি দিয়ে সার্চ করুন।</p>
                         <div class="flex items-center space-x-2 mb-4">
+                             <select id="global-mail-search-type" class="p-3 border rounded-lg border-gray-300">
+                                <option value="stock">Search in Stock</option>
+                                <option value="sale">Search in Sales</option>
+                            </select>
                             <input type="text" id="global-mail-search-input" class="w-full p-3 rounded-lg border border-gray-300" placeholder="Search by full email address...">
                             <button id="global-mail-search-btn" class="btn btn-primary">Search</button>
                         </div>
                         <div id="global-mail-search-results-container" class="mt-6">
-                            <p class="text-gray-500">Enter an email and click search to find a mail across all categories.</p>
+                            <p class="text-gray-500">Select a category, enter an email, and click search.</p>
                         </div>
                     </div>
                 </div>
@@ -343,12 +348,10 @@
                     </div>
                 </div>
 
-                <!-- =========== UPDATED SETTINGS PAGE =========== -->
                 <div id="settings-page" class="page">
                     <h1 class="text-3xl font-bold mb-6 text-gray-800">App Settings</h1>
                     <div class="space-y-8">
 
-                        <!-- NEW: General Settings Card -->
                         <div class="stat-card p-6">
                              <h2 class="text-xl font-bold mb-4">Business & Deposit Rules</h2>
                              <p class="text-sm text-gray-500 mb-4">এখানে সেট করা নিয়মগুলো ইউজার অ্যাপে সরাসরি প্রভাব ফেলবে।</p>
@@ -419,18 +422,6 @@
         </div>
     </div>
     
-    <div id="global-mail-search-modal" class="modal-overlay hidden">
-        <div class="modal-content !w-[900px]">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold">Mail Search Results</h2>
-                <button id="global-search-modal-close" class="p-2 text-3xl font-bold">&times;</button>
-            </div>
-            <p class="mb-4">Email: <strong id="global-search-email-display" class="font-mono"></strong></p>
-            <div id="global-search-results-list" class="space-y-3 mb-6 max-h-[50vh] overflow-y-auto"></div>
-            <button id="global-search-delete-all-btn" class="btn btn-danger w-full">Delete All Found Mails</button>
-        </div>
-    </div>
-
     <div id="custom-alert" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] p-4"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-xl"><p id="alert-message" class="mb-4 text-gray-800"></p><button id="alert-ok-btn" class="btn btn-primary px-6">OK</button></div></div>
     <div id="custom-confirm" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[200] p-4"><div class="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-xl"><p id="confirm-message" class="mb-6 text-gray-800 whitespace-pre-wrap"></p><div class="flex justify-center space-x-4"><button id="confirm-cancel-btn" class="btn bg-gray-300 text-gray-800 px-6">Cancel</button><button id="confirm-ok-btn" class="btn btn-danger px-6">Confirm</button></div></div></div>
     
@@ -459,31 +450,26 @@
         };
         
         const ADMIN_UIDS = ["H8Nrwo2lCOXVBTqTsynmAeOJSY52"]; 
+        const TELEGRAM_BOT_TOKEN = "8185055021:AAECHvC3MvXbWWufxmg_H3mXIysrLQRzoNs";
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
         import { getFirestore, collection, doc, getDoc, setDoc, updateDoc, query, where, onSnapshot, addDoc, serverTimestamp, deleteDoc, writeBatch, getDocs, runTransaction, orderBy, limit, getCountFromServer, increment, Timestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-        // --- Initialize both Firebase apps ---
         const userApp = initializeApp(firebaseConfigUser, "userApp");
         const mailApp = initializeApp(firebaseConfigMail, "mailApp");
 
-        // --- Authentication is tied to the User App ---
         const auth = getAuth(userApp); 
-        
-        // --- Get Firestore instances for each app ---
-        const dbUser = getFirestore(userApp); // Database for user balances, deposits
-        const dbMail = getFirestore(mailApp); // Database for mails, history, configs
+        const dbUser = getFirestore(userApp);
+        const dbMail = getFirestore(mailApp);
 
-        // --- Global State ---
         const loginView = document.getElementById('admin-login-view');
         const dashboardView = document.getElementById('admin-dashboard');
         let appConfig = {};
         let activeListeners = {};
         let allPurchases = [];
-        let globalFoundMails = [];
+        let allUsersMap = new Map();
         
-        // --- Initialization ---
         window.onload = () => {
             lucide.createIcons();
             setupEventListeners();
@@ -491,6 +477,7 @@
                 if (user && ADMIN_UIDS.includes(user.uid)) {
                     loginView.style.display = 'none';
                     dashboardView.style.display = 'block';
+                    fetchAllUsers();
                     navigateTo('dashboard-page');
                 } else {
                     if (user) signOut(auth);
@@ -500,7 +487,6 @@
             });
         };
         
-        // --- Navigation & Page Loading ---
         function navigateTo(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId)?.classList.add('active');
@@ -532,7 +518,6 @@
 
         async function fetchAppConfig() {
             try {
-                // IMPORTANT: App config comes from dbMail
                 const configRef = doc(dbMail, "config", "main");
                 const docSnap = await getDoc(configRef);
                 const defaults = {
@@ -549,7 +534,12 @@
             }
         }
 
-        // --- Event Listeners Setup ---
+        async function fetchAllUsers() {
+            const usersSnap = await getDocs(collection(dbUser, "users"));
+            allUsersMap.clear();
+            usersSnap.forEach(doc => allUsersMap.set(doc.id, doc.data()));
+        }
+
         function setupEventListeners() {
             document.getElementById('admin-login-btn').addEventListener('click', handleAdminLogin);
             document.getElementById('admin-logout-btn').addEventListener('click', () => signOut(auth));
@@ -576,11 +566,8 @@
             document.getElementById('support-cancel-btn').addEventListener('click', resetSupportForm);
             document.getElementById('purchase-search').addEventListener('input', (e) => renderPurchases(e.target.value));
             document.getElementById('global-mail-search-btn').addEventListener('click', handleGlobalMailSearch);
-            document.getElementById('global-search-modal-close').addEventListener('click', () => document.getElementById('global-mail-search-modal').classList.add('hidden'));
-            document.getElementById('global-search-delete-all-btn').addEventListener('click', handleDeleteAllFoundMails);
         }
 
-        // --- Authentication ---
         async function handleAdminLogin() {
             const email = document.getElementById('admin-email').value;
             const password = document.getElementById('admin-password').value;
@@ -594,22 +581,40 @@
             } catch (error) { showAlert("Login failed: " + error.message); }
         }
         
-        // --- Dashboard Logic ---
         async function loadDashboardData() {
             try {
                 const [ usersSnap, pendingDepositsSnap, pendingReplaceSnap, allPurchasesSnap ] = await Promise.all([
-                    getDocs(collection(dbUser, "users")), // From dbUser
-                    getCountFromServer(query(collection(dbUser, "deposits"), where("status", "==", "pending"))), // From dbUser
-                    getCountFromServer(query(collection(dbMail, "replace_requests"), where("status", "==", "pending"))), // From dbMail
-                    getDocs(collection(dbMail, "mail_purchases")) // From dbMail
+                    getDocs(collection(dbUser, "users")),
+                    getCountFromServer(query(collection(dbUser, "deposits"), where("status", "==", "pending"))),
+                    getCountFromServer(query(collection(dbMail, "replace_requests"), where("status", "==", "pending"))),
+                    getDocs(collection(dbMail, "mail_purchases"))
                 ]);
+
                 document.getElementById('total-users').textContent = usersSnap.size;
                 const totalUserBalance = usersSnap.docs.reduce((sum, doc) => sum + (doc.data().balance || 0), 0);
                 document.getElementById('total-user-balance').textContent = `৳${totalUserBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                
                 document.getElementById('pending-deposits').textContent = pendingDepositsSnap.data().count;
                 document.getElementById('pending-replace-requests').textContent = pendingReplaceSnap.data().count;
-                const totalSaleIncome = allPurchasesSnap.docs.reduce((sum, doc) => sum + doc.data().cost, 0);
-                document.getElementById('total-sale-income').textContent = `৳${totalSaleIncome.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+                const startOfToday = new Date();
+                startOfToday.setHours(0, 0, 0, 0);
+                const todayTimestamp = Timestamp.fromDate(startOfToday);
+
+                let totalSaleIncome = 0;
+                let todaySaleIncome = 0;
+
+                allPurchasesSnap.docs.forEach(doc => {
+                    const purchase = doc.data();
+                    totalSaleIncome += purchase.cost;
+                    if (purchase.purchasedAt >= todayTimestamp) {
+                        todaySaleIncome += purchase.cost;
+                    }
+                });
+
+                document.getElementById('total-sales-stat').textContent = `৳${totalSaleIncome.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                document.getElementById('today-sales-stat').textContent = `৳${todaySaleIncome.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
             } catch (error) {
                 console.error("Error loading dashboard data:", error);
                 showAlert("Failed to load dashboard statistics.");
@@ -624,7 +629,6 @@
             if (!appConfig.mails || appConfig.mails.length === 0) { container.innerHTML = `<p>No mail types configured in settings.</p>`; return; }
             const stockPromises = appConfig.mails.map(async (mail) => {
                 try {
-                    // IMPORTANT: Stock data comes from dbMail
                     const stockQuery = query(collection(dbMail, mail.stockKey), where("isSold", "==", false));
                     const snapshot = await getCountFromServer(stockQuery);
                     return { name: mail.type, count: snapshot.data().count };
@@ -638,14 +642,12 @@
                 </div>`).join('');
         }
         
-        // --- User Management ---
         async function loadUsers(searchTerm = '') {
             const tableBody = document.getElementById('users-table-body');
             tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
-            // IMPORTANT: Users are fetched from dbUser
-            const q = query(collection(dbUser, "users"), orderBy("balance", "desc"));
-            const snapshot = await getDocs(q);
-            let users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            let users = Array.from(allUsersMap.values()).map(user => ({ id: user.tgChatId, ...user }));
+            users.sort((a,b) => (b.balance || 0) - (a.balance || 0));
+
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
                 users = users.filter(user => (user.name || '').toLowerCase().includes(term) || (user.tgChatId || '').includes(term));
@@ -676,8 +678,8 @@
         window.toggleBlockUser = (userId, isBlocked) => {
             const action = isBlocked ? 'unblock' : 'block';
             showConfirm(`Are you sure you want to ${action} this user?`, async () => {
-                // IMPORTANT: User block status updated in dbUser
                 await updateDoc(doc(dbUser, "users", userId), { isBlocked: !isBlocked });
+                await fetchAllUsers(); // Refresh user map
                 showAlert(`User successfully ${action}ed.`);
                 loadUsers(document.getElementById('user-search').value);
             });
@@ -697,7 +699,6 @@
             const action = document.getElementById('balance-action').value;
             const amount = parseFloat(document.getElementById('balance-amount').value);
             if (isNaN(amount) || amount < 0) return showAlert("Please enter a valid amount.");
-            // IMPORTANT: User balance updated in dbUser
             const userRef = doc(dbUser, "users", userId);
             try {
                 await runTransaction(dbUser, async (transaction) => {
@@ -708,17 +709,16 @@
                     if (newBalance < 0) newBalance = 0;
                     transaction.update(userRef, { balance: newBalance });
                 });
+                await fetchAllUsers();
                 showAlert("User balance updated successfully.");
                 document.getElementById('balance-modal').classList.add('hidden');
                 loadUsers(document.getElementById('user-search').value);
             } catch (error) { showAlert("Failed to update balance: " + error.message); }
         }
         
-        // --- Requests Management ---
         function loadDeposits() {
             const tableBody = document.getElementById('deposits-table-body');
             tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Loading...</td></tr>`;
-            // IMPORTANT: Deposits fetched from dbUser
             const q = query(collection(dbUser, "deposits"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
             activeListeners['deposits'] = onSnapshot(q, (snapshot) => {
                 if (snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="7" class="text-center">No pending deposits.</td></tr>`; return; }
@@ -735,22 +735,50 @@
                 }).join('');
             });
         }
+
+        // NEW: Telegram Bot Message Function
+        async function sendTelegramMessage(chatId, message) {
+            if (!TELEGRAM_BOT_TOKEN || !chatId) return;
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (error) {
+                console.error("Failed to send Telegram message:", error);
+            }
+        }
         
         window.handleDeposit = (depositId, userId, amount, newStatus) => {
             showConfirm(`Are you sure you want to ${newStatus} this ৳${amount} deposit?`, async () => {
                 const depositRef = doc(dbUser, "deposits", depositId);
                 const userRef = userId ? doc(dbUser, "users", userId) : null;
                 try {
-                    // Transaction on dbUser
                     await runTransaction(dbUser, async (transaction) => {
                         transaction.update(depositRef, { status: newStatus, processedAt: serverTimestamp() });
                         if (newStatus === 'approved' && userRef) { transaction.update(userRef, { balance: increment(amount) }); }
                     });
-                    // Notification sent to dbMail
+                    
+                    const notificationTitle = newStatus === 'approved' ? `✅ Deposit Approved` : `❌ Deposit Rejected`;
+                    const notificationMessage = `Your deposit request of ৳${amount} has been ${newStatus}.`;
+
                     await addDoc(collection(dbMail, "notifications"), {
-                        recipientId: userId, title: `Deposit ${newStatus}`,
-                        message: `Your deposit request of ৳${amount} has been ${newStatus}.`, createdAt: serverTimestamp()
+                        recipientId: userId, title: notificationTitle,
+                        message: notificationMessage, createdAt: serverTimestamp()
                     });
+
+                    // Send Telegram message on approval
+                    if (newStatus === 'approved') {
+                        const telegramMessage = `✅ Your deposit of <b>৳${amount}</b> has been successfully approved!\n\nYour updated balance is now available in the app.`;
+                        await sendTelegramMessage(userId, telegramMessage);
+                    }
+                    
                     showAlert(`Deposit has been ${newStatus}.`);
                 } catch (e) { showAlert("Operation failed: " + e.message); }
             });
@@ -759,7 +787,6 @@
         function loadReplaceRequests() {
             const tableBody = document.getElementById('replace-requests-table-body');
             tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading...</td></tr>`;
-            // IMPORTANT: Replace requests fetched from dbMail
             const q = query(collection(dbMail, "replace_requests"), where("status", "==", "pending"), orderBy("requestedAt", "desc"));
             activeListeners['replace'] = onSnapshot(q, (snapshot) => {
                 if(snapshot.empty) { tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No pending replace requests.</td></tr>`; return; }
@@ -782,17 +809,13 @@
         window.handleApproveRequest = (requestId, userId, cost, purchaseId, saleId, mailType) => {
             showConfirm(`Approve this request and refund ৳${cost} to user ${userId}?`, async () => {
                 try {
-                    // This is a cross-database operation, not a single transaction.
-                    // Phase 1: Update mail-related data in dbMail
                     const mailBatch = writeBatch(dbMail);
                     mailBatch.update(doc(dbMail, "replace_requests", requestId), { status: 'approved', resolvedAt: serverTimestamp() });
                     mailBatch.update(doc(dbMail, "mail_purchases", purchaseId), { isRefunded: true });
                     await mailBatch.commit();
                     
-                    // Phase 2: Update user balance in dbUser
                     await updateDoc(doc(dbUser, "users", userId), { balance: increment(cost) });
 
-                    // Phase 3: Send notification (dbMail)
                     const mailTypeName = mailType.split(' (ID:')[0];
                     await addDoc(collection(dbMail, "notifications"), {
                         recipientId: userId, title: "✅ Report Approved",
@@ -807,7 +830,6 @@
             showConfirm("Reject this request? A penalty might be applied to the user.", async () => {
                 const userRef = doc(dbUser, "users", userId);
                 try {
-                    // Phase 1: Update user penalty in dbUser
                     await runTransaction(dbUser, async (transaction) => {
                         const userSnap = await transaction.get(userRef);
                         if (!userSnap.exists()) throw new Error("User not found");
@@ -818,15 +840,13 @@
                         const updates = { dailyRejections };
                         if (dailyRejections.count >= 5) {
                             updates.isBlocked = true;
-                            updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 3600000); // 5 hours
+                            updates.blockedUntil = Timestamp.fromMillis(Date.now() + 5 * 3600000);
                         }
                         transaction.update(userRef, updates);
                     });
 
-                    // Phase 2: Update request status in dbMail
                     await updateDoc(doc(dbMail, "replace_requests", requestId), { status: 'rejected', resolvedAt: serverTimestamp() });
 
-                    // Phase 3: Send notification (dbMail)
                     const mailTypeName = mailType.split(' (ID:')[0];
                     await addDoc(collection(dbMail, "notifications"), {
                         recipientId: userId, title: "❌ Report Rejected",
@@ -837,22 +857,17 @@
             });
         };
 
-        // --- Content Management (Stock, Purchases, Mails etc.) ---
         async function loadMailPurchases() {
             const tableBody = document.getElementById('purchases-table-body');
             tableBody.innerHTML = `<tr><td colspan="6" class="text-center">Loading...</td></tr>`;
-            const usersMap = new Map();
-            const [purchasesSnap, usersSnap] = await Promise.all([
-                getDocs(query(collection(dbMail, "mail_purchases"), orderBy("purchasedAt", "desc"), limit(200))), // From dbMail
-                getDocs(collection(dbUser, "users")) // From dbUser
-            ]);
-            usersSnap.forEach(doc => usersMap.set(doc.id, doc.data().name || doc.id));
+            const purchasesSnap = await getDocs(query(collection(dbMail, "mail_purchases"), orderBy("purchasedAt", "desc"), limit(200)));
             allPurchases = purchasesSnap.docs.map(docSnap => {
                 const p = docSnap.data();
+                const userName = allUsersMap.get(p.userId)?.name || p.userId;
                 return {
                     saleId: p.saleId || 'N/A',
                     date: p.purchasedAt?.toDate().toLocaleString() || 'N/A',
-                    userName: usersMap.get(p.userId) || p.userId,
+                    userName: userName,
                     mailType: p.type === 'bulk' ? `${p.mailType} (Bulk)` : p.mailType,
                     mailDetails: p.type === 'bulk' ? `${p.quantity || p.mails.length} items` : [p.mail, p.password].filter(Boolean).join(' | '),
                     cost: `৳${p.cost.toFixed(2)}`
@@ -889,7 +904,6 @@
             showConfirm(`Are you sure you want to add ${lines.length} mails to the '${stockKey}' stock?`, async () => {
                 let addedCount = 0; const batchSize = 400; 
                 for (let i = 0; i < lines.length; i += batchSize) {
-                    // IMPORTANT: Mails are added to dbMail
                     const batch = writeBatch(dbMail);
                     const chunk = lines.slice(i, i + batchSize);
                     chunk.forEach(line => {
@@ -909,50 +923,85 @@
             });
         }
         
-        // --- Global Mail Search & Bulk Tools ---
+        // --- UPDATED Global Mail Search ---
         async function handleGlobalMailSearch() {
             const email = document.getElementById('global-mail-search-input').value.trim();
+            const searchType = document.getElementById('global-mail-search-type').value;
             const resultsContainer = document.getElementById('global-mail-search-results-container');
             const searchBtn = document.getElementById('global-mail-search-btn');
+            
             if (!email) { resultsContainer.innerHTML = '<p class="text-red-500">Please enter an email address.</p>'; return; }
+            
             searchBtn.disabled = true; searchBtn.textContent = 'Searching...';
             resultsContainer.innerHTML = '<p>Searching...</p>';
-            await fetchAppConfig(); globalFoundMails = [];
+            
+            if (searchType === 'stock') {
+                await searchInStock(email, resultsContainer);
+            } else {
+                await searchInSales(email, resultsContainer);
+            }
+            
+            searchBtn.disabled = false; searchBtn.textContent = 'Search';
+        }
+        
+        async function searchInStock(email, container) {
+            await fetchAppConfig();
+            let foundMails = [];
             const searchPromises = appConfig.mails.map(async (mailType) => {
                 try {
-                    // IMPORTANT: Searching in dbMail
                     const q = query(collection(dbMail, mailType.stockKey), where("email", "==", email));
                     const snapshot = await getDocs(q);
-                    snapshot.forEach(doc => { globalFoundMails.push({ id: doc.id, stockKey: mailType.stockKey, type: mailType.type, ...doc.data() }); });
+                    snapshot.forEach(doc => {
+                        foundMails.push({ id: doc.id, stockKey: mailType.stockKey, type: mailType.type, ...doc.data() });
+                    });
                 } catch (e) { console.error(`Error in ${mailType.stockKey}:`, e.message); }
             });
             await Promise.all(searchPromises);
-            searchBtn.disabled = false; searchBtn.textContent = 'Search';
-            if (globalFoundMails.length > 0) {
-                document.getElementById('global-search-email-display').textContent = email;
-                document.getElementById('global-search-results-list').innerHTML = globalFoundMails.map(mail => `
-                    <div class="p-3 bg-gray-50 border rounded-lg flex justify-between items-center" id="found-mail-${mail.id}">
-                        <div><p><strong>Category:</strong> ${mail.type} | <strong>Status:</strong> <span class="font-semibold ${mail.isSold ? 'text-red-500' : 'text-green-600'}">${mail.isSold ? 'Sold' : 'Unsold'}</span></p></div>
-                        <button class="btn btn-danger text-xs" onclick="window.deleteSingleFoundMail('${mail.stockKey}', '${mail.id}')">Delete</button>
+
+            if (foundMails.length > 0) {
+                container.innerHTML = foundMails.map(mail => `
+                    <div class="p-3 bg-gray-50 border rounded-lg flex justify-between items-center">
+                        <div>
+                           <p><strong>Category:</strong> ${mail.type}</p>
+                           <p><strong>Status:</strong> <span class="font-semibold ${mail.isSold ? 'text-red-500' : 'text-green-600'}">${mail.isSold ? 'Sold' : 'Unsold'}</span></p>
+                        </div>
+                        <button class="btn btn-danger text-xs" onclick="window.deleteSingleFoundMail('${mail.stockKey}', '${mail.id}', this)">Delete</button>
                     </div>`).join('');
-                document.getElementById('global-mail-search-modal').classList.remove('hidden');
-                resultsContainer.innerHTML = `<p class="text-green-600 font-semibold">${globalFoundMails.length} mail(s) found.</p>`;
-            } else { resultsContainer.innerHTML = '<p class="text-yellow-600 font-semibold">No mail found.</p>'; }
+            } else {
+                container.innerHTML = '<p class="text-yellow-600 font-semibold">No mail found in any stock.</p>';
+            }
         }
         
-        window.deleteSingleFoundMail = (stockKey, docId) => { showConfirm("Delete this specific mail?", async () => { await deleteDoc(doc(dbMail, stockKey, docId)); showAlert("Mail deleted."); document.getElementById(`found-mail-${docId}`)?.remove(); }); };
-        
-        function handleDeleteAllFoundMails() {
-            if (globalFoundMails.length === 0) return;
-            showConfirm(`Delete all ${globalFoundMails.length} found instances?`, async () => {
-                const batch = writeBatch(dbMail);
-                globalFoundMails.forEach(mail => batch.delete(doc(dbMail, mail.stockKey, mail.id)));
-                await batch.commit();
-                showAlert(`Deleted all ${globalFoundMails.length} mails.`);
-                document.getElementById('global-mail-search-modal').classList.add('hidden');
+        async function searchInSales(email, container) {
+            const q = query(collection(dbMail, "mail_purchases"), where("mail", "==", email), orderBy("purchasedAt", "desc"));
+            const snapshot = await getDocs(q);
+            
+            if (!snapshot.empty) {
+                 container.innerHTML = snapshot.docs.map(doc => {
+                    const purchase = doc.data();
+                    const user = allUsersMap.get(purchase.userId);
+                    const userName = user ? user.name : 'Unknown User';
+                    const purchaseDate = purchase.purchasedAt.toDate().toLocaleString();
+                    return `
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <p><strong>Purchased By:</strong> ${userName} (${purchase.userId})</p>
+                            <p><strong>Purchase Date:</strong> ${purchaseDate}</p>
+                            <p><strong>Sale ID:</strong> #${purchase.saleId || 'N/A'}</p>
+                        </div>`;
+                }).join('');
+            } else {
+                container.innerHTML = '<p class="text-yellow-600 font-semibold">No purchase history found for this email.</p>';
+            }
+        }
+
+        window.deleteSingleFoundMail = (stockKey, docId, btn) => {
+            showConfirm("Are you sure you want to permanently delete this mail from stock?", async () => {
+                await deleteDoc(doc(dbMail, stockKey, docId));
+                showAlert("Mail deleted successfully.");
+                btn.parentElement.remove();
             });
-        }
-        
+        };
+
         async function loadBulkToolsPage() {
             const container = document.getElementById('bulk-tools-container');
             container.innerHTML = `<p>Loading...</p>`;
@@ -995,7 +1044,6 @@
             });
         }
         
-        // --- Notifications & Content Management (All in dbMail) ---
         async function handleBroadcastNotification() { const title = document.getElementById('broadcast-title').value; const message = document.getElementById('broadcast-message').value; if (!title || !message) return; showConfirm("Send to ALL users?", async () => { await addDoc(collection(dbMail, 'notifications'), { title, message, createdAt: serverTimestamp(), recipientId: null }); showAlert("Broadcast sent!"); }); }
         async function handleDirectNotification() { const userId = document.getElementById('direct-user-id').value; const title = document.getElementById('direct-title').value; const message = document.getElementById('direct-message').value; if (!userId || !title || !message) return; await addDoc(collection(dbMail, 'notifications'), { title, message, recipientId: userId, createdAt: serverTimestamp() }); showAlert(`Direct notification sent.`); }
         
@@ -1121,7 +1169,6 @@
                     });
                     if (mail.type && mail.stockKey) newConfig.mails.push(mail);
                 });
-                // IMPORTANT: Settings are saved to dbMail
                 await setDoc(doc(dbMail, "config", "main"), newConfig);
                 showAlert("All settings saved successfully!");
             });
@@ -1133,7 +1180,7 @@
                 if (snapshot.empty) { listContainer.innerHTML = '<p class="text-gray-500">No links.</p>'; return; }
                 listContainer.innerHTML = snapshot.docs.map(docSnap => {
                     const link = { id: docSnap.id, ...docSnap.data() }; const linkDataString = JSON.stringify(link).replace(/"/g, "'");
-                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${link.name}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editSupportLink(${linkDataString})">Edit</button><button class="btn text-xs btn-danger" onclick="window.deleteSupportLink('${link.id}')">Delete</button></div></div>`;
+                    return `<div class="flex items-center justify-between p-3 bg-gray-100 rounded-lg"><div><p class="font-semibold">${link.name}</p></div><div class="space-x-2"><button class="btn text-xs bg-blue-100 text-blue-800" onclick="window.editSupportLink(${linkDataString})">Edit</button><button class="btn btn-xs btn-danger" onclick="window.deleteSupportLink('${link.id}')">Delete</button></div></div>`;
                 }).join('');
             });
         }
@@ -1142,7 +1189,6 @@
         window.editSupportLink = (link) => { document.getElementById('support-id').value = link.id; document.getElementById('support-name').value = link.name; document.getElementById('support-iconUrl').value = link.iconUrl; document.getElementById('support-link').value = link.link; document.getElementById('support-order').value = link.order; document.getElementById('support-isActive').checked = link.isActive; document.getElementById('support-form-title').textContent = "Edit Support Link"; document.getElementById('support-cancel-btn').classList.remove('hidden'); };
         window.deleteSupportLink = (id) => showConfirm("Delete link?", async () => await deleteDoc(doc(dbMail, "support_channels", id)));
         
-        // --- Utility Functions ---
         function showAlert(message) { document.getElementById('alert-message').textContent = message; document.getElementById('custom-alert').classList.remove('hidden'); }
         function showConfirm(message, onConfirm) {
             const confirmModal = document.getElementById('custom-confirm');
